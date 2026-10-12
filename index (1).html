@@ -1,0 +1,988 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>The Endless Descent — Responsive Edition v2.0.4</title><style>
+:root{color-scheme:dark;--bg:#0d1118;--panel:#171e29;--edge:#374558;--fg:#e8e9e7;--muted:#aab5c3;--gold:#f2c96c;--green:#b9e9be;--red:#ffc1b4}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#1e2938 0%,#0d1118 65%);color:var(--fg);font:15px/1.5 system-ui,Arial,sans-serif}.wrap{max-width:1120px;margin:auto;padding:18px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.eyebrow{letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-size:11px}h1{font-family:Georgia,serif;font-size:clamp(26px,4vw,40px);margin:0 0 4px}h2{font-size:18px;margin:0 0 12px}h3{font-size:15px;margin:12px 0 6px}.sub{color:var(--muted);font-size:13px}.card{background:var(--panel);border:1px solid var(--edge);border-radius:12px;padding:15px}.grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(275px,1fr);gap:14px;margin-top:15px}.stack{display:grid;gap:14px}.row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.between{justify-content:space-between}.btn,input,select{border:1px solid #506077;background:#253145;color:var(--fg);border-radius:8px;padding:10px 12px;font:inherit;min-height:42px}.btn{cursor:pointer;text-align:left}.btn:hover:not(:disabled){background:#314561;border-color:#a5b9d6}.btn:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--gold);outline-offset:2px}.btn:disabled{opacity:.45;cursor:default}.btn.primary{background:#51422b;border-color:#d5ad5c;color:#ffeed1;font-weight:700}.btn.small{padding:7px 9px;min-height:34px;font-size:13px}input[type=number]{width:125px}input[type=range]{min-height:auto;padding:0;accent-color:var(--gold)}.field{width:100%;min-width:0}.choicegrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.journal{height:390px;overflow:auto;background:#0e121a;border:1px solid #354154;border-radius:10px;padding:18px}.line{border-left:2px solid #475367;padding:6px 0 6px 12px;margin:0 0 12px;animation:appear .35s ease}.line.latest{border-color:var(--gold);color:#ffedc7}.line.hurt{color:var(--red)}.line.reward{color:var(--green)}.line.cue{font-style:italic;color:var(--gold)}@keyframes appear{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.stat{background:#202b39;padding:9px;border:1px solid #384659;border-radius:8px}.value{font-weight:800;font-size:18px}.tiny{font-size:12px;color:var(--muted)}.tags{display:flex;flex-wrap:wrap;gap:5px}.tag{font-size:12px;background:#303b49;border-radius:5px;padding:3px 7px}.tag.open{background:#64502c;color:#ffe6a9}.tag.exposed{background:#63382d;color:#ffd1c3}.tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px}.tabs .btn[aria-selected=true]{color:var(--gold);border-color:var(--gold)}.hidden,[hidden]{display:none!important}.item{border-bottom:1px solid #394353;padding:9px 0}.item:last-child{border:0}.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.alert{border:1px solid #b79b55;background:#383122;padding:10px;border-radius:8px;margin-bottom:10px}.modalbg{position:fixed;inset:0;z-index:30;background:#000c;display:flex;align-items:center;justify-content:center;padding:16px}.modal{max-width:560px;width:100%;max-height:85vh;overflow-y:auto;background:#1b2736;padding:20px;border:1px solid #9b875b;border-radius:12px}.maincol{min-width:0}label{font-size:13px}hr{border:0;border-top:1px solid #3d4958;margin:13px 0}details{border:1px solid var(--edge);padding:9px;border-radius:8px}summary{cursor:pointer;font-weight:600}@media(max-width:790px){.grid{grid-template-columns:1fr}.journal{height:330px}}@media(max-width:460px){.choicegrid,.two{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}@media(prefers-reduced-motion:reduce){.line{animation:none}}
+
+/* v2.0.2 mobile balance + compact actions */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);padding-bottom:env(safe-area-inset-bottom)}
+button,.btn,input,select,textarea{touch-action:manipulation}
+textarea{font:inherit}
+@media(max-width:790px){
+  body{background:#0d1118;font-size:16px}
+  .wrap{padding:10px 10px calc(14px + env(safe-area-inset-bottom));max-width:none}
+  .top{align-items:flex-start}
+  .top>div:first-child{width:100%}
+  .top>.row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;gap:8px}
+  .top>.row .btn{width:100%;min-height:46px;text-align:center}
+  h1{font-size:30px;line-height:1.08}
+  h2{font-size:19px}
+  .sub{font-size:14px;line-height:1.45}
+  .card{padding:13px;border-radius:10px}
+  .grid{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+  .stack{gap:10px}
+  .journal{height:360px;padding:14px;font-size:16px;line-height:1.58;scroll-behavior:smooth}
+  .line{padding-left:10px;margin-bottom:14px}
+  .choicegrid,.two{grid-template-columns:1fr;gap:9px}
+  .btn,input,select,textarea{font-size:16px;min-height:48px}
+  .btn{padding:11px 13px}
+  .btn.small{min-height:44px;padding:9px 10px;font-size:14px}
+  input[type=number]{width:min(145px,45vw);font-size:20px;text-align:center}
+  #rollPanel{position:sticky;bottom:calc(6px + env(safe-area-inset-bottom));z-index:12;box-shadow:0 -8px 24px #0008;border-color:#6a7890}
+  #actionPanel{position:static;box-shadow:none;border-color:#46556a;padding:10px}
+  #actionPanel h2{font-size:17px;margin-bottom:6px}
+  #choices{max-height:210px;overflow-y:auto;overscroll-behavior:contain;padding-right:2px}
+  #choices .btn{min-height:44px;padding:8px 10px}
+  #actionPanel>.row{margin-top:8px!important}
+  #actionFeedback{max-height:42px;overflow:auto;line-height:1.3;margin-top:4px}
+  #rollPanel .row{align-items:stretch}
+  #rollPanel .row .btn{flex:1;text-align:center}
+  #actionPanel>.row{display:grid;grid-template-columns:1fr;gap:8px}
+  #free{width:100%}
+  #freeSubmit{width:100%;text-align:center}
+  #choices .btn{width:100%;text-align:left;min-height:52px}
+  .stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .stat{padding:8px 6px;min-width:0}
+  .stat .value{font-size:17px}
+  .tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;scrollbar-width:thin}
+  .tabs .btn{flex:0 0 auto;white-space:nowrap}
+  aside{order:2}
+  main{order:1}
+  .modalbg{padding:10px;align-items:flex-end}
+  .modal{max-width:none;width:100%;max-height:82%;padding:16px 14px calc(16px + env(safe-area-inset-bottom));border-radius:14px 14px 8px 8px}
+  #saveCode{font-size:16px!important}
+  details{padding:10px}
+}
+@media(max-width:430px){
+  .wrap{padding-left:8px;padding-right:8px}
+  .top>.row{grid-template-columns:1fr 1fr}
+  .eyebrow{font-size:10px;letter-spacing:.12em}
+  h1{font-size:28px}
+  .journal{height:330px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tag{font-size:11px}
+}
+@media(max-width:340px){
+  .top>.row{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+}
+@media(min-width:1000px){
+  .wrap{max-width:1440px;padding:22px 28px}
+  .grid{grid-template-columns:minmax(0,2.15fr) minmax(330px,.95fr);gap:18px}
+  .stack{gap:18px}
+  .journal{height:min(58vh,610px);min-height:460px;font-size:16px;line-height:1.58}
+  #actionPanel{padding:16px}
+  #choices{grid-template-columns:repeat(3,minmax(0,1fr))}
+  #actionPanel>.row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:stretch}
+  #freeSubmit{white-space:nowrap}
+  aside{align-self:start}
+}
+@media(min-width:1280px){
+  .journal{height:min(62vh,680px)}
+  .top>.row{justify-content:flex-end}
+}
+
+</style></head><body><div class="wrap"><header class="top"><div><div class="eyebrow">A voice-synchronized roguelite · Gloamwick quests · edition 2.0.4 · Responsive</div><h1>The Endless Descent</h1><div class="sub">Story-first encounters · Multi-enemy dungeon · Tactical talents · Responsive phone + desktop layout · Portable saves · Optional narration</div></div><div class="row"><button class="btn small" id="save">Save</button><button class="btn small" id="exportSave">Copy save code</button><button class="btn small" id="importSave">Import save code</button><button class="btn small" id="importFileBtn">Import file</button><input id="importFile" type="file" accept="application/json,.json" hidden><button class="btn small" id="reset">New game</button></div></header>
+
+<div id="saveModal" class="modalbg hidden"><div class="modal"><h2 id="saveModalTitle">Portable save</h2><p id="saveModalHelp" class="sub"></p><textarea id="saveCode" class="field" style="min-height:220px;resize:vertical;font-family:ui-monospace,monospace;font-size:12px"></textarea><div class="row" style="margin-top:12px"><button class="btn primary" id="saveModalPrimary">Copy</button><button class="btn" id="saveModalClose">Close</button></div><div id="saveModalStatus" class="tiny" style="margin-top:8px"></div></div></div>
+<section class="card" style="margin-top:14px"><div class="row between"><strong>Dungeon Master narration</strong><button id="voiceToggle" class="btn small">Enable voice</button></div><div class="row" style="margin-top:9px"><label for="voice">Voice</label><select id="voice" style="flex:1;min-width:135px"><option value="">Browser default</option></select><button id="testVoice" class="btn small">Test</button><label for="rate">Speed</label><input id="rate" type="range" min="0.65" max="1.4" step=".05" value=".95"><span id="rateLabel">0.95×</span><label for="gap">Pause</label><input id="gap" type="range" min="0" max="2" step=".1" value=".5"><span id="gapLabel">0.5s</span></div><div id="voiceStatus" class="tiny" role="status">Voice off. Text advances with short timed pauses.</div></section>
+<section id="create" class="card" style="margin-top:14px"><h2>Create your adventurer</h2><label for="heroName">Name</label><input id="heroName" class="field" maxlength="28" value="Rowan"><h3>Starting class</h3><div id="classPick" class="choicegrid"></div><h3>Starting talent</h3><div id="talentPick" class="choicegrid"></div><div class="row" style="margin-top:12px"><label for="diceMode">Dice mode</label><select id="diceMode"><option value="auto" selected>Automatic</option><option value="manual">Physical dice (enter results)</option></select></div><p class="sub">Your adventurer's XP, permanent attributes, items and each class's levels are saved between expeditions. Class changes occur at camp or at a cleared chamber.</p><button class="btn primary" id="start">Begin your descent</button><button class="btn" id="load" hidden>Continue saved adventurer</button></section>
+<div id="game" class="grid" hidden><main class="stack maincol"><section class="card"><div class="row between"><h2 id="location">Floor 1 · Chamber 1</h2><span id="turnState" class="tiny">Narrator</span></div><div id="journal" class="journal" aria-live="polite" aria-relevant="additions"></div><div id="badges" class="tags" style="margin-top:10px"></div></section><section id="rollPanel" class="card" hidden><h2 id="rollTitle">Roll a d20</h2><div id="rollContext" class="sub"></div><div class="row" style="margin-top:9px"><input id="rollInput" type="number" min="1" max="20" step="1" inputmode="numeric" placeholder="Die result" aria-label="Dice result"><button class="btn primary" id="rollSubmit">Submit roll ↵</button></div><div id="rollError" class="tiny" role="alert"></div></section><section id="actionPanel" class="card" hidden><h2 id="actionTitle">What will you do?</h2><div id="choices" class="choicegrid"></div><div class="row" style="margin-top:12px"><input id="free" class="field" style="flex:1" placeholder="Try something unusual…"><button class="btn small" id="freeSubmit">Try unusual action</button></div><div class="tiny" id="actionFeedback">Optional: use this for unusual environmental or roleplay actions.</div></section></main><aside class="stack"><section class="card"><div class="row between"><h2 id="heroTitle">Adventurer</h2><button id="classSwitch" class="btn small">Change class</button></div><div id="miniStats" class="stats"></div><div class="row" style="margin-top:10px"><label for="liveDiceMode" class="tiny">Dice</label><select id="liveDiceMode" class="btn small" style="min-height:38px"><option value="auto">Automatic</option><option value="manual">Physical</option></select></div><div id="xpBars" class="tiny" style="margin-top:11px"></div></section><section class="card"><h2>Character sheet</h2><div class="tabs" id="sheetTabs"><button class="btn small" data-tab="stats" aria-selected="true">Attributes</button><button class="btn small" data-tab="combat">Combat</button><button class="btn small" data-tab="skills">Skills</button><button class="btn small" data-tab="inventory">Inventory</button><button class="btn small" data-tab="classes">Classes</button><button class="btn small" data-tab="clues">Clues</button><button class="btn small" data-tab="quests">Quests</button></div><div id="sheetBody"></div></section><section class="card"><h2>How to play</h2><div class="tiny">Your narration advances after the browser finishes speaking. Automatic dice are the default, and dice mode can be changed at any time. Physical-dice prompts focus the number field automatically. A DM cue signals every decision. Inspecting a room reveals concrete objects you can manipulate by name. Free text distinguishes method, target, movement and desired effect. Explore four chambers per floor; the last contains a boss, or return to the nearby village to investigate its secrets. Battlefield distance has Far, Near and Engaged zones. Cover and enemy awareness affect approaches. Most attacks connect: low rolls become glancing hits, strong rolls increase damage, and a natural 1 is the normal true miss. Criticals vary by weapon. Enemy misses can create an <b>Opening</b> that different classes exploit in different ways. Kills award XP; physical loot is recovered by actually searching the fallen foe. Kills award XP while corpses hold physical loot. Mana and Stamina limit stronger abilities. Mages can Center; Rogues can Catch Their Breath; Warriors can use Second Wind; and endurance tonics restore Stamina. Hidden Rogues can Sneak Advance to reposition without automatically breaking stealth. Talents can create new combat and noncombat options. Talents are labeled Shared or class-specific before purchase, and already-owned talents cannot be purchased again. Field Medicine is shared but deliberately modest and costs 3 Stamina. Death returns you to camp but costs a portion of carried gold. Gloamwick has persistent quests and a village mini-boss. Dungeon combat now includes multi-enemy encounters, target selection, encounter-based XP, AOE and crowd-control talents, and a Crypt Captain group boss. The talent language is designed to translate later into grid-based tactical combat. Portable save codes carry your adventurer between builds.</div></section></aside></div></div>
+<div id="modalBg" class="modalbg" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><h2 id="modalTitle">Level up</h2><div id="modalBody"></div><div id="modalButtons" class="stack" style="margin-top:12px"></div></div></div>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id), pick=a=>a[Math.floor(Math.random()*a.length)], d=n=>1+Math.floor(Math.random()*n), clamp=(x,a,b)=>Math.min(b,Math.max(a,x));
+const CLASS={rogue:{name:'Rogue',baseHP:15,baseStamina:10,baseMana:0,primary:'DEX',weapons:['Iron Dagger','Shortbow'],skills:['Shadow Strike','Evasive Footwork','Deadeye'],starterTalents:['Explosive Shot','Smoke Bomb','Snarecraft'],desc:'Mobile striker; create openings, isolate targets and punish clustered enemies.'},warrior:{name:'Warrior',baseHP:22,baseStamina:13,baseMana:0,primary:'STR',weapons:['Iron Sword','Hunting Bow'],skills:['Shield Bash','Iron Guard','Power Strike'],starterTalents:['Sweeping Strike','Hold the Line','Brace'],desc:'Front-line controller; lock down groups and punish enemies that close.'},mage:{name:'Mage',baseHP:13,baseStamina:6,baseMana:14,primary:'INT',weapons:['Oak Staff','Spark Wand'],skills:['Arcane Burst','Mana Shield','Focused Spell'],starterTalents:['Chain Lightning','Frost Nova','Arcane Charge'],desc:'Battlefield shaper; spend Mana on true area damage and control.'}};
+const GEAR={'Iron Dagger':{type:'melee',die:6,desc:'A balanced close-range weapon.'},'Shortbow':{type:'ranged',die:6,desc:'A light bow. At close range, attacks suffer a −2 penalty.'},'Iron Sword':{type:'melee',die:8,desc:'Dependable sword for close combat.'},'Hunting Bow':{type:'ranged',die:6,desc:'A bow for fighting at distance. Close range −2.'},'Oak Staff':{type:'melee',die:6,desc:'A sturdy staff for emergencies.'},'Spark Wand':{type:'ranged',die:8,desc:'A wand channeling arcane bolts; not penalized in close quarters.'},'Steel Dagger':{type:'melee',die:8,desc:'Forged steel, more dangerous than iron.'},'Longbow':{type:'ranged',die:8,desc:'Strong ranged weapon. Close range −2.'},'Runed Staff':{type:'melee',die:8,desc:'A hardwood staff carved with runes.'},'Ember Wand':{type:'ranged',die:10,desc:'A volatile wand firing hot magical bolts.'},'Knight Sword':{type:'melee',die:10,desc:'Heavy, finely tempered steel.'}};
+// A critical hit includes an extra weapon die; risky weapons also have critical mishaps.
+Object.assign(GEAR['Iron Dagger'],{crit:19,fail:1,effect:'precision'});
+Object.assign(GEAR['Steel Dagger'],{crit:19,fail:1,effect:'precision'});
+Object.assign(GEAR['Shortbow'],{crit:20,fail:1,effect:'precision'});
+Object.assign(GEAR['Longbow'],{crit:20,fail:1,effect:'precision'});
+Object.assign(GEAR['Iron Sword'],{crit:20,fail:1,effect:'steady'});
+Object.assign(GEAR['Knight Sword'],{crit:20,fail:2,effect:'heavy'});
+Object.assign(GEAR['Hunting Bow'],{crit:20,fail:1,effect:'steady'});
+Object.assign(GEAR['Oak Staff'],{crit:20,fail:1,effect:'steady'});
+Object.assign(GEAR['Runed Staff'],{crit:20,fail:1,effect:'arcane'});
+Object.assign(GEAR['Spark Wand'],{crit:20,fail:1,effect:'arcane'});
+Object.assign(GEAR['Ember Wand'],{crit:19,fail:2,effect:'volatile'});
+const ZONES=['engaged','near','far'];
+const COVERS=[{name:'fallen columns',detail:'Broken pillars split the chamber, offering a place to break line of sight.'},{name:'broken masonry',detail:'A low wall of shattered masonry stands between you and the creature.'},{name:'rotted shelves',detail:'Toppled shelves form a narrow barrier through the chamber.'},{name:'clear floor',detail:'The chamber floor is exposed, offering nowhere convenient to hide.'}];
+const APPROACHES=['A creature moves in the distance, apparently unaware of your presence.','You hear claws on stone before you spot a shadow behind the debris.','The enemy pauses by an old pillar, its attention fixed on something else.'];
+const CRIT_MISHAPS=['The blow overbalances you, leaving your guard exposed.','Your weapon catches awkwardly against the stone; you lose your footing.','You strain to recover the heavy swing and leave an opening.'];
+const SKILL={ 'Shadow Strike':{max:3,desc:'A situational melee finisher. Available only while Hidden, against an unaware foe, or when an Opening exists. It hits much harder when properly set up; a miss leaves you Exposed. Each rank adds +2 damage.'},'Evasive Footwork':{max:3,desc:'Increases dodge defense by +1 per rank.'},'Deadeye':{max:3,desc:'Adds +1 to ranged attack rolls per rank.'},'Shield Bash':{max:3,desc:'Engaged-range control attack. Deals only d4 + STR instead of normal weapon damage. Base stun chance 40%; an Opening raises the chance sharply. Each rank adds +10% stun chance.'},'Iron Guard':{max:3,desc:'Increases defense by +1 per rank.'},'Power Strike':{max:3,desc:'Strong melee strike: +3 damage per rank, −1 to hit.'},'Arcane Burst':{max:3,desc:'A powerful ranged spell that requires a tactical window: cover, an unaware/stunned foe, an obstruction slowing the enemy, or an Opening. Cannot be cast while Engaged. Uses your wand and gains +4 damage, +2 per rank.'},'Mana Shield':{max:3,desc:'Increases defense by +1 per rank.'},'Focused Spell':{max:3,desc:'Adds +1 to ranged attack rolls per rank.'}};
+const TALENT={
+ 'Explosive Shot':{class:'rogue',desc:'Rogue-only · 5 Stamina. Fire an explosive arrow at one ranged target; the blast also damages other enemies in the encounter. Excellent against clustered groups.'},
+ 'Smoke Bomb':{class:'rogue',desc:'Rogue-only · 3 Stamina. Break line of sight, become Hidden, and force ranged enemies to reacquire you. Creates a fresh Shadow Strike setup.'},
+ 'Snarecraft':{class:'rogue',desc:'Rogue-only · 3 Stamina. Prepare a snare. The next melee enemy that advances can be stopped, damaged, and left vulnerable.'},
+ 'Ricochet':{class:'rogue',desc:'Rogue-only · 4 Stamina. A precision ranged attack that bounces into a second enemy.'},
+ 'Sweeping Strike':{class:'warrior',desc:'Warrior-only · 4 Stamina. Swing through every enemy currently Engaged with you. Lower single-target damage, excellent when surrounded.'},
+ 'Hold the Line':{class:'warrior',desc:'Warrior-only · 3 Stamina. Take a guarded stance and punish the next enemy that closes into melee.'},
+ 'Brace':{class:'warrior',desc:'Warrior-only · 3 Stamina. Prepare one heavy counter against the next enemy that charges into melee, halting its movement.'},
+ 'Challenge':{class:'warrior',desc:'Warrior-only · 2 Stamina. Draw hostile attention and reduce the next wave of melee damage.'},
+ 'Chain Lightning':{class:'mage',desc:'Mage-only · 5 Mana. Strike the chosen target and arc into up to two additional enemies. Damage falls slightly with each jump.'},
+ 'Frost Nova':{class:'mage',desc:'Mage-only · 5 Mana. Damage all Near or Engaged enemies and slow their next movement.'},
+ 'Arcane Charge':{class:'mage',desc:'Mage-only · 3 Mana and one turn of setup. Charge the next wand spell for improved damage and critical quality.'},
+ 'Arcane Mine':{class:'mage',desc:'Mage-only · 4 Mana. Place a magical trap that detonates when an enemy advances.'},
+ 'Restoration':{class:'mage',desc:'Mage-only · 4 Mana. Restore health to yourself or a wounded NPC.'},
+ 'Deep Meditation':{class:'mage',desc:'Mage-only. Upgrades Centering: sacrifice one turn to recover a large amount of Mana instead of the basic amount.'},
+ 'Thievery':{class:null,desc:'Shared. Unlock lockpicking, pickpocketing, sleight-of-hand and trap-bypass options.'},
+ 'Intimidation':{class:null,desc:'Shared. Unlock forceful dialogue, surrender and coercion options.'},
+ 'Field Medicine':{class:null,desc:'Shared · 3 Stamina. Use healing herbs on yourself or an injured NPC for modest healing.'},
+ 'Keen Senses':{class:null,desc:'Shared. Gain +2 Observation and reveal more actionable environmental details.'},
+ 'Observation':{class:null,desc:'Shared. Each rank grants +1 Observation.'},
+ 'Stealth':{class:null,desc:'Shared. Each rank grants +1 to hiding and quiet movement.'},
+ 'Athletics':{class:null,desc:'Shared. Each rank grants +1 to climbing, shoving, forcing and physical environmental actions.'}
+};
+const MISSES=['You duck beneath the swinging weapon.','You pivot to one side as the blade whistles by.','A backward step leaves the strike falling short.','You drop your shoulder and the weapon sails overhead.','The blow glances off the stone beside you.','You slip past the attacker’s leading arm.','A sharp feint makes the creature strike empty air.','You lean away at the very last instant.','Your quick footwork carries you beyond its reach.','The enemy stumbles as you turn past its attack.','You crouch low while its strike passes harmlessly.','Its weapon tears through your cloak, missing your skin.'];
+const OPENINGS=['Your sidestep leaves its flank wide open!','It overextends badly—an opening appears!','The missed blow pulls its guard out of position!','Its weapon catches the wall, exposing its side!','It lunges past you and cannot recover its stance!','The creature loses its balance: strike now!','You bait its attack, leaving a perfect gap in its defense!'];
+const HITS=['Your strike finds its mark.','Steel meets its target.','Your attack cuts through the enemy’s guard.','A sharp impact staggers your foe.','Your timing is perfect and the strike lands.'];
+const GLANCES=['Your attack clips the target rather than landing cleanly.','The blow catches armor and still jars your foe.','Your attack lands at an awkward angle, but it still hurts.','The target turns with the strike, reducing the impact.','You connect, though not as cleanly as you intended.'];
+const STRONG_HITS=['You drive straight through the opening with a punishing hit.','The attack lands flush and sends your foe reeling.','You catch the target perfectly and the impact is brutal.','Your timing turns a solid hit into a devastating one.','The strike lands with enough force to break the enemy’s rhythm.'];
+const MAGIC_HITS=['Your arcane bolt strikes cleanly.','The wand flashes and magical force snaps into the target.','A bright pulse of magic catches your foe squarely.','Arcane energy crackles across the target.'];
+const MAGIC_GLANCES=['The spell clips the target in a shower of sparks.','The bolt grazes your foe, bleeding away some of its force.','The target twists aside, but the edge of the spell still catches it.'];
+const MAGIC_STRONG=['The wand erupts with force and the spell slams into your foe.','Arcane power detonates against the target and drives it backward.','The spell lands perfectly, bursting across the enemy in a violent flash.'];
+function attackGrade(roll,bonus,defense,critRange=20){
+ if(roll===1)return {grade:'miss',margin:-99};
+ if(roll>=critRange)return {grade:'critical',margin:99};
+ const margin=roll+bonus-defense;
+ if(margin<=-5)return {grade:'glancing',margin};
+ if(margin>=11)return {grade:'exceptional',margin};
+ if(margin>=6)return {grade:'strong',margin};
+ return {grade:'normal',margin};
+}
+function damageScale(grade){return grade==='glancing'?.4:grade==='strong'?1.4:grade==='exceptional'?1.7:grade==='critical'?1.9:1;}
+// The adventure pack: authored situations, selected without replacement on each floor.
+// Each provides setting, motives, meaningful scene actions and consistent physical details.
+const STORY={
+ watch:{type:'enemy',name:'Restless Skeleton',terrain:'rotted shelves',distance:'far',awareness:'unaware',move:1,ranged:false,
+ lines:['The next doorway opens into a ruined library. Paper dust floats above toppled shelves.','A skeleton walks the same short path between two desks, pausing each time beside a chair still neatly pulled out.','It drags a blade at its side. The bookshelves screen much of your approach, and it has not noticed you.'],
+ choices:[['Watch its peculiar patrol','scene_observe'],['Slip around the shelves','scene_bypass'],['Call out to the lonely figure','scene_parley']]},
+ lost:{type:'enemy',name:'Goblin Scout',terrain:'broken masonry',distance:'far',awareness:'unaware',move:1,ranged:false,
+ lines:['A wavering lantern glows at the foot of a collapsed arch.','A goblin kneels beside a bundle of torn cloth, turning over stones and muttering a name: “Tikka... Tikka!”','It is so absorbed in searching the rubble that your arrival goes unnoticed.'],
+ choices:[['Ask whom it is searching for','scene_parley'],['Help search the fallen stones','scene_help'],['Slip past the distracted scout','scene_bypass']]},
+ bridge:{type:'enemy',name:'Cave Bandit',terrain:'fallen columns',distance:'far',awareness:'suspicious',move:2,ranged:true,
+ lines:['A narrow bridge stretches across a black cistern. Water drips far below.','At the opposite end, a bandit holds a drawn bow but has not yet taken aim. The ruined pillars offer broken lines of sight.','“One step closer and I loose,” the stranger warns. The bridge is narrow enough that neither of you can easily rush the other.'],
+ choices:[['Offer to bargain for passage','scene_parley'],['Study the bridge and its supports','scene_observe'],['Edge into the shadow of a pillar','scene_cover']]},
+ wounded:{type:'enemy',name:'Wounded Mercenary',terrain:'broken masonry',distance:'near',awareness:'suspicious',move:1,ranged:false,
+ lines:['The corridor reeks of wet leather and bitter herbs.','A mercenary leans against the wall, pressing a bloodied hand to a torn leg. A short sword lies beside a half-open satchel.','“Stay back,” the mercenary warns, though there is more fear than strength in the voice.'],
+ choices:[['Offer help with the injury','scene_help'],['Ask what happened here','scene_parley'],['Back away and look for another route','scene_bypass']]},
+ bells:{type:'trap',name:'The Bell Corridor',lines:['A narrow passage is threaded with tiny bronze bells at ankle height.','Beyond them, faded children’s drawings cover the walls. A cold draft makes one bell tremble without ringing.','The floor stones between the wires appear worn smooth by years of cautious footsteps.'],choices:[['Trace the wire to its trigger','inspect'],['Step carefully between the bells','cross'],['Turn back and find the other passage','continue']]},
+ reliquary:{type:'chest',name:'The Traveler’s Cache',lines:['An abandoned bedroll lies beside an overturned handcart.','A small travel chest is tucked beneath a patched cloak. Someone has carved a little sun on its lid.','The straps are still buckled. Whoever left it here may have intended to return.'],choices:[['Examine the straps and lock','open'],['Leave the traveler’s belongings alone','continue']]},
+ altar:{type:'shrine',name:'The Hearth Shrine',lines:['Warm lamplight falls across a tiny roadside shrine, impossibly untouched by the damp.','Three names have been carefully scratched into the stone beside a bowl of coins.','A chipped cup of fresh water stands at its base.'],choices:[['Rest a moment and offer a prayer','pray'],['Take the coins from the offering bowl','take'],['Leave the shrine undisturbed','continue']]},
+ trader:{type:'merchant',name:'The Lantern Keeper',lines:['A woman sits beside a brass lantern, mending a torn boot. A mule snorts softly in the dark behind her.','“You look like someone who has seen the lower stairs,” she says, without looking up.','A few corked bottles and sharpening stones are arranged carefully on a blanket.'],choices:[['Buy healing draught · 12 gold','buy'],['Buy mana draught · 12 gold','buy_mana'],['Hone weapons · current price shown when selected','upgrade'],['Wish her safe travels','continue']]},
+ alchemy:{type:'enemy',name:'Fume Crawler',terrain:'broken workbenches',distance:'far',awareness:'unaware',move:1,ranged:false,
+ lines:['A copper door opens into the remains of an alchemical workshop. Green vapor curls from cracked glassware.','A pale, many-legged creature noses through shattered cabinets while a rack of sealed bottles trembles above it.','The creature has not noticed you, and several intact valves still connect to the room’s old ventilation pipes.'],
+ choices:[['Study the bottles and valves','scene_observe'],['Try to slip through while it feeds','scene_bypass'],['Create a distraction across the room','scene_cover']]},
+ tollkeeper:{type:'enemy',name:'Old Toll Keeper',terrain:'stone toll booth',distance:'far',awareness:'suspicious',move:1,ranged:false,
+ lines:['A carved stone arch spans the passage ahead. Beneath it sits an armored figure beside a rusted toll box.','The old keeper lifts one gauntleted hand. “Passage has a price. Coin, story, or blood.”','A narrow maintenance path disappears behind the booth, half hidden by hanging chains.'],
+ choices:[['Ask what sort of story buys passage','scene_parley'],['Study the booth and maintenance path','scene_observe'],['Search for a way around','scene_bypass']]},
+ flooded:{type:'enemy',name:'Marsh Stalker',terrain:'waist-high stone channels',distance:'far',awareness:'unaware',move:1,ranged:false,
+ lines:['Cold water covers the next chamber ankle-deep, flowing through old stone channels.','Something lean moves between half-submerged pillars on the far side, pausing whenever the water ripples.','A raised maintenance ledge follows one wall, though part of it has collapsed.'],
+ choices:[['Watch how the creature tracks movement','scene_observe'],['Climb toward the raised ledge','scene_cover'],['Move carefully along the wall','scene_bypass']]},
+ archer:{type:'enemy',name:'Silent Archer',terrain:'fallen columns',distance:'far',awareness:'suspicious',move:1,ranged:true,
+ lines:['A broken audience hall opens ahead, split by rows of toppled columns.','High on a cracked dais, a masked archer already has an arrow resting against the string.','The columns create a staggered path of cover between you and the dais.'],
+ choices:[['Study the archer’s firing rhythm','scene_observe'],['Move toward the nearest column','scene_cover'],['Call out before the bow is drawn','scene_parley']]},
+ chained:{type:'enemy',name:'Chained Cave Hound',terrain:'iron support posts',distance:'near',awareness:'suspicious',move:2,ranged:false,
+ lines:['A massive hound crouches in the center of a storage vault, an iron chain fixed to a floor ring.','Its ribs show beneath scarred hide. The chain is long enough to reach most of the obvious path forward.','An overturned feed bucket and a locked side gate suggest someone once tended it here.'],
+ choices:[['Offer food and speak softly','scene_help'],['Examine the chain and side gate','scene_observe'],['Look for a route outside its reach','scene_bypass']]},
+ argument:{type:'enemy',name:'Goblin Lookout',terrain:'stacked crates',distance:'far',awareness:'unaware',move:1,ranged:false,
+ lines:['Voices carry around the next corner before you see their owners. Two goblins are arguing beside stacked supply crates.','One insists the map is upside down. The other insists there should not be a river underground at all.','Neither has noticed you, and their argument is becoming increasingly personal.'],
+ choices:[['Listen for useful information','scene_observe'],['Slip past while they argue','scene_bypass'],['Interrupt with an authoritative lie','scene_parley']]},
+ bonepatrol:{type:'enemy',name:'Bone Patrol',terrain:'fallen columns',distance:'far',awareness:'suspicious',move:1,ranged:false,group:[
+ {name:'Skeleton Guard',role:'melee',hp:10,move:1,ranged:false},{name:'Skeleton Guard',role:'melee',hp:10,move:1,ranged:false},{name:'Bone Archer',role:'ranged',hp:8,move:1,ranged:true}],
+ lines:['The corridor widens into an old mustering hall where three skeletal soldiers still keep formation.','Two sword-bearing guards patrol the floor while a third skeleton watches from a broken gallery with a bow.','They have not fully identified you yet, but the formation is already beginning to turn in your direction.'],choices:[['Study the patrol formation','scene_observe'],['Move toward the nearest cover','scene_cover']]},
+raiders:{type:'enemy',name:'Raider Crew',terrain:'stacked crates',distance:'far',awareness:'unaware',move:1,ranged:false,group:[
+ {name:'Goblin Bruiser',role:'melee',hp:12,move:1,ranged:false},{name:'Goblin Slinger',role:'ranged',hp:8,move:1,ranged:true},{name:'Goblin Hexer',role:'support',hp:7,move:1,ranged:true}],
+ lines:['Torchlight flickers over a makeshift supply camp built directly across the passage.','A broad goblin sorts stolen gear while a slinger lounges on a crate and a robed hexer mutters over a bowl of blue flame.','For the moment, they are more interested in their loot than in the corridor behind them.'],choices:[['Observe how the three work together','scene_observe'],['Use the crates to approach unseen','scene_cover'],['Try to bluff your way through','scene_parley']]},
+swarm:{type:'enemy',name:'Crawler Nest',terrain:'broken workbenches',distance:'near',awareness:'suspicious',move:2,ranged:false,group:[
+ {name:'Fume Crawler',role:'melee',hp:7,move:2,ranged:false},{name:'Fume Crawler',role:'melee',hp:7,move:2,ranged:false},{name:'Spore Crawler',role:'support',hp:9,move:1,ranged:true}],
+ lines:['The floor ahead seems to breathe until three pale shapes pull themselves from beneath ruined benches.','Two crawlers spread wide while a swollen spore-carrier remains behind them, vents along its back pulsing with green light.','The narrow room gives them little space to spread out—which may work in your favor.'],choices:[['Study the creatures before they rush you','scene_observe'],['Back toward the doorway and make them come through together','scene_cover']]},
+cryptcaptain:{type:'boss',name:'Crypt Captain',terrain:'stone sarcophagi',distance:'far',awareness:'alert',move:1,ranged:false,group:[
+ {name:'Crypt Captain',role:'boss',hp:30,move:1,ranged:false,def:13},{name:'Grave Guard',role:'melee',hp:13,move:1,ranged:false},{name:'Grave Archer',role:'ranged',hp:11,move:1,ranged:true}],
+ lines:['The fourth chamber opens into a burial court ringed by cracked sarcophagi.','An armored captain rises from the central dais while a grave guard steps into the aisle and an archer draws from behind a stone tomb.','The captain lifts a rusted blade. The other dead move with it, not as a mob, but as a unit.'],choices:[['Read the formation before committing','scene_observe'],['Take shelter behind a sarcophagus','scene_cover']]},
+sentinel:{type:'boss',name:'Ash Sentinel',terrain:'fallen columns',distance:'far',awareness:'suspicious',move:1,ranged:false,
+ lines:['The final hall is lined with statues whose faces have been deliberately scraped away.','Before a locked spiral stair stands an immense armored sentinel, its hands resting on the head of a black iron hammer.','As you step inside, ember light flares behind its visor. A low voice sounds from within the armor: “None pass without remembrance.”'],
+ choices:[['Ask what it means by remembrance','scene_parley'],['Examine the statues for a clue','scene_observe'],['Approach the guardian with your weapon lowered','scene_help']]}
+};
+// Persistent village hub. This is intentionally authored rather than procedurally generated.
+const VILLAGE_NAME='Gloamwick';
+const VILLAGE={
+ square:{name:'Gloamwick Village Square',intro:[
+  'Gloamwick sits in a shallow valley where the morning mist seems reluctant to leave. The village is quiet without being abandoned; curtains move, chimney smoke rises, and conversations soften when strangers pass.',
+  'A dry stone fountain occupies the center of the square. The old bell tower rises above the rooftops, though no bell has sounded since you arrived.',
+  'Roads lead toward the Crooked Lantern inn, Merrow’s General Goods, the smithy, the chapel, and a shuttered house at the edge of the village.'
+ ],return:['The square is as subdued as before. The dry fountain catches pale light, and the silent bell tower watches over the roofs.'],choices:[
+  ['Examine the old fountain','village:investigate:fountain'],['Listen and watch the square','village:investigate:square'],['Visit the Crooked Lantern','village:go:inn'],['Visit Merrow’s General Goods','village:go:store'],['Visit the smithy and apothecary','village:go:smith'],['Visit the chapel','village:go:chapel'],['Walk toward the shuttered house','village:go:house'],['Return to dungeon camp','village:leave']
+ ]},
+ inn:{name:'The Crooked Lantern',intro:[
+  'The Crooked Lantern is warmer than the street but scarcely louder. A fire burns low beneath a blackened kettle.',
+  'Innkeeper Mara Fen polishes the same brass cup twice while three locals play cards without speaking. A guest ledger lies open near her elbow.',
+  'A narrow staircase climbs to the rented rooms above.'
+ ],return:['Mara Fen gives you a measured nod as you return to the Crooked Lantern. The card players glance up, then back down.'],choices:[
+  ['Speak with Mara Fen','village:talk:innkeeper'],['Examine the guest ledger','village:investigate:ledger'],['Listen to the card players','village:investigate:cards'],['Return to the square','village:go:square']
+ ]},
+ store:{name:'Merrow’s General Goods',intro:[
+  'Bundles of rope, lamp oil, dried fruit, nails, and patched travel cloaks crowd the shelves of Merrow’s General Goods.',
+  'Old Merrow watches you from behind a counter protected by an iron cash box. Several parcels wait beneath a shelf, each marked for delivery in careful black ink.',
+  '“Dungeon folk spend coin,” he says. “Village folk spend questions. I prefer the first sort.”'
+ ],return:['The little brass bell above Merrow’s door gives a dull clink. He looks disappointed to see that you still have questions.'],choices:[
+  ['Buy a healing potion · 10 gold','village:buy:potion'],['Ask Merrow about the village','village:talk:merrow'],['Look more closely at the waiting parcels','village:investigate:parcels'],['Return to the square','village:go:square']
+ ]},
+ smith:{name:'The Cinder & Sage',intro:[
+  'The smithy shares a wall with a tiny apothecary, filling one room with hammer heat and the other with the scent of bitter leaves.',
+  'Tessa Vale works at the forge while her brother Corren sorts dried herbs into paper packets. Between them sits an unusual piece of polished silver wrapped in cloth.',
+  'Neither sibling seems eager to discuss it.'
+ ],return:['Forge light pulses against the windows of the Cinder & Sage. Tessa looks up from the anvil; Corren pretends not to.'],choices:[
+  ['Ask Tessa to improve your weapons','village:smith:upgrade'],['Ask about the wrapped silver object','village:investigate:clapper'],['Speak with Corren about local remedies','village:talk:corren'],['Return to the square','village:go:square']
+ ]},
+ chapel:{name:'Chapel of the Last Light',intro:[
+  'The chapel is small, whitewashed, and almost painfully neat. Every candle has been trimmed to exactly the same height.',
+  'A rope disappears through a hole in the ceiling toward the bell tower, but its lower end has been cut cleanly away.',
+  'An elderly caretaker named Sister Elian sits among stacks of hymnals, copying names into a weathered parish book.'
+ ],return:['The Chapel of the Last Light smells of wax and old paper. Sister Elian is still writing names in her parish book.'],choices:[
+  ['Speak with Sister Elian','village:talk:elian'],['Examine the severed bell rope','village:investigate:rope'],['Study the old hymnals and parish records','village:investigate:records'],['Return to the square','village:go:square']
+ ]},
+ house:{name:'The Shuttered House',intro:[
+  'The house at the eastern edge of Gloamwick has been shuttered for years, yet the weeds around its foundation are strangely flattened.',
+  'Its front door is chained from the outside. No smoke rises from the chimney.',
+  'One upstairs shutter hangs slightly crooked, moving even when the air is still.'
+ ],return:['The shuttered house waits exactly where you left it. Nothing about it looks welcoming, but small details no longer feel accidental.'],choices:[
+  ['Examine the front entrance','village:investigate:frontdoor'],['Walk around the outside of the house','village:investigate:housegrounds'],['Study the crooked upstairs shutter','village:investigate:shutter'],['Return to the square','village:go:square']
+ ]}
+};
+VILLAGE.cellar={name:'The Venn Cellar',intro:[
+ 'The concealed foundation door opens onto narrow steps descending beneath the shuttered house.',
+ 'Cold air carries the smell of old wax and damp stone. A worktable has been left beneath shelves of bell fittings, and a second iron-bound door stands at the far end of the cellar.',
+ 'Someone has been here recently. The dust has been disturbed around a leather journal and a circle of blackened silver filings.'
+],return:['The Venn cellar remains cold and unnaturally still. Beyond the worktable, the iron-bound inner door waits in the stone wall.'],choices:[
+ ['Read the leather journal','village:quest:journal'],['Examine the inner door','village:quest:bossdoor'],['Return outside the shuttered house','village:go:house']
+]};
+const QUESTS={
+ empty_house:{title:'The Empty House',summary:'Find out who is receiving supplies at the supposedly abandoned Venn house.',reward:'60 XP, knowledge, and an advantage against whatever is beneath the house.'},
+ midnight_bell:{title:'The Bell After Midnight',summary:'Learn why Gloamwick’s silent bell still sounds after midnight.',reward:'100 XP and the resolution of Gloamwick’s central mystery.'},
+ silver_clapper:{title:'The Silver Clapper',summary:'Discover why Tessa repaired a marked silver bell clapper and what it was meant to do.',reward:'40 XP and a protective ward that can weaken the village mini-boss.'}
+};
+const CLUES={
+ fountain_mark:{title:'The Mark Beneath the Fountain',text:'A crescent-shaped mark pierced by a tiny bell is carved beneath the fountain rim. It has been deliberately hidden from casual view.'},
+ square_silence:{title:'The Village Listens Upward',text:'Several villagers unconsciously glance toward the silent bell tower whenever the wind changes. Nobody comments on it.'},
+ ledger_guest:{title:'A Guest Who Never Checked Out',text:'The inn ledger shows “Elias Venn” renting room six several months ago. There is no departure date, though Mara insists the room has long been empty.'},
+ card_whisper:{title:'The Midnight Bell',text:'The card players quietly mention hearing one bell stroke after midnight, despite the chapel bell rope having been cut.'},
+ parcel_house:{title:'Deliveries to an Empty House',text:'Merrow’s parcels include lamp oil and dried food addressed only to “E.V.” at the shuttered house.'},
+ clapper_repair:{title:'The Silver Bell Clapper',text:'Tessa repaired a silver bell clapper recently. It bears the same crescent-and-bell mark found beneath the fountain.'},
+ rope_cut:{title:'The Bell Rope Was Cut from Below',text:'The chapel rope was severed cleanly from inside the sanctuary, not broken by age or weather.'},
+ old_record:{title:'The Venn Record',text:'Parish records mention Elias Venn as former keeper of the bell tower and caretaker of a sealed “lower room” beneath his family house.'},
+ house_tracks:{title:'Fresh Tracks at the Shuttered House',text:'Recent boot prints circle the house and disappear near the rear foundation, although every visible entrance is sealed.'},
+ cellar_seam:{title:'A Concealed Foundation Door',text:'Behind nettles at the rear foundation is the outline of a narrow concealed door. It has no visible handle and appears to open from within.'},
+ shutter_signal:{title:'The Crooked Shutter Is Deliberate',text:'Scratches on the latch suggest the upstairs shutter has been repeatedly opened only a few inches, as though used for signaling.'}
+};
+// Room affordances are concrete stateful objects. Inspection reveals them; free text can target them.
+const AFFORDANCES={
+ watch:[
+  {id:'tables',name:'overturned tables',aliases:['table','tables','desk','desks'],detail:'Two overturned oak tables create a broken line of cover along the western wall.',acts:['cover','hide','move']},
+  {id:'bookcase',name:'cracked bookcase',aliases:['bookcase','bookshelf','shelf','shelves'],detail:'A tall bookcase leans toward the center aisle. Its lower supports are split; a strong shove or focused blast could bring it down.',acts:['topple','blast','push','inspect']},
+  {id:'chandelier',name:'hanging chandelier',aliases:['chandelier','chain','hanging chain'],detail:'A rusted chandelier hangs above part of the skeleton’s patrol route. One chain link is badly corroded.',acts:['drop','shoot','cut','inspect']},
+  {id:'northdoor',name:'northern doorway',aliases:['door','doorway','north door','northern doorway'],detail:'A narrow doorway on the north wall stands partly open beyond the skeleton’s route.',acts:['move','bypass','inspect']}
+ ],
+ lost:[
+  {id:'rubble',name:'collapsed rubble',aliases:['rubble','stones','rocks','arch'],detail:'The collapse forms several shallow pockets. Scraps of cloth and footprints disappear beneath the loose stones.',acts:['search','move','inspect']},
+  {id:'lantern',name:'goblin lantern',aliases:['lantern','light'],detail:'The goblin’s lantern sits on the ground several paces away, throwing long shadows across the chamber.',acts:['extinguish','move','throw','inspect']},
+  {id:'sidepassage',name:'shadowed side passage',aliases:['passage','side passage','tunnel'],detail:'A narrow side passage skirts the edge of the collapse and might allow a careful traveler to avoid the goblin entirely.',acts:['move','bypass','inspect']}
+ ],
+ bridge:[
+  {id:'pillars',name:'ruined pillars',aliases:['pillar','pillars','column','columns'],detail:'Broken pillars rise along the bridge approach, enough to hide most of a person from the bandit’s bow.',acts:['cover','hide','move']},
+  {id:'planks',name:'loose bridge planks',aliases:['plank','planks','bridge','boards'],detail:'Several boards on the bandit’s side are loose and poorly supported. A heavy impact might make that section treacherous.',acts:['break','blast','inspect']},
+  {id:'rope',name:'frayed bridge rope',aliases:['rope','ropes','support rope'],detail:'One side rope is badly frayed but still bearing tension.',acts:['cut','shoot','inspect']}
+ ],
+ wounded:[
+  {id:'satchel',name:'half-open satchel',aliases:['satchel','bag','pack'],detail:'The mercenary’s half-open satchel contains bandages, a cracked compass, and a folded scrap of map.',acts:['inspect','search','take']},
+  {id:'sword',name:'dropped short sword',aliases:['short sword','sword','blade'],detail:'A short sword lies on the floor just beyond the mercenary’s easy reach.',acts:['take','move','inspect']},
+  {id:'sidecorridor',name:'side corridor',aliases:['corridor','side corridor','route'],detail:'A narrow side corridor disappears behind broken masonry. It may reconnect farther ahead.',acts:['move','bypass','inspect']}
+ ],
+ sentinel:[
+  {id:'statues',name:'faceless statues',aliases:['statue','statues','faces'],detail:'Each statue carries a shield bearing a different family crest. Fresh scrape marks show the sentinel carefully avoids striking them.',acts:['inspect','use','cover']},
+  {id:'shields',name:'carved shields',aliases:['shield','shields','crest','crests'],detail:'The shield crests repeat in a sequence around the hall, and one matches a symbol carved beside the stair.',acts:['inspect','touch','use']},
+  {id:'columns',name:'fallen columns',aliases:['column','columns','pillar','pillars'],detail:'Fallen columns divide the hall into lanes and could slow the sentinel if you force it to maneuver around them.',acts:['cover','move','obstruct']}
+ ]
+};
+function roomObjects(){return AFFORDANCES[g?.enemy?.sceneKey]||[]}
+function findRoomObject(text){const t=text.toLowerCase();const hits=roomObjects().filter(o=>o.aliases.some(a=>t.includes(a)));return hits}
+async function inspectRoom(){
+ const e=g.enemy,objs=roomObjects();
+ if(!objs.length){await narrate('You slow down and study the surroundings, but nothing here suggests an obvious new opportunity.');return}
+ if(e.discovered){await narrate('You review what you have already noticed. '+objs.map(o=>o.name).join(', ')+'.');return}
+ e.discovered=true;
+ await narrate('You stop looking at the immediate danger and study the room itself.');
+ for(const o of objs)await narrate(o.detail);
+ await narrate('Those details are now part of the scene. You can act on them directly—by name—in your own words.','reward');
+}
+async function useRoomObject(cmd){
+ const [,id,action,method=''] = cmd.split(':'); const e=g.enemy; const o=roomObjects().find(x=>x.id===id); if(!o)return;
+ if(!e.discovered){await narrate(`You have not examined the room closely enough to confidently act on the ${o.name} yet.`);return}
+ const diff=10+Math.floor(g.floor/2);
+ if(id==='sword'&&e?.sceneKey==='wounded'&&['move','take','push','kick'].includes(action)){
+  if(e.swordMoved){await narrate('The short sword is already well away from the mercenary’s reach.');return}
+  await narrate('You hook the short sword with your boot and send it scraping down the corridor, well beyond the mercenary’s reach.');
+  e.swordMoved=true;e.weaponNearby=false;e.armed=false;
+  await narrate('The mercenary watches the blade disappear and realizes a quick grab for the weapon is no longer possible.','reward');return;
+ }
+ if(['cover','hide'].includes(action)){
+  g.cover=true;if(action==='hide'&&g.cls==='rogue')g.hidden=true;
+  await narrate(`You use the ${o.name} to break line of sight and improve your position.`,'reward');return;
+ }
+ if(['move','bypass'].includes(action)){
+  await narrate(`You start using the ${o.name} as your route through the chamber.`);
+  const r=await beginRoll(20,'Careful movement');
+  if(r===20||(r!==1&&r+mod('DEX')>=diff)){await peacefulExit(`You make use of the ${o.name} and pass the danger without giving it a clean chance to stop you.`,8+g.floor);}
+  else{e.awareness='alert';e.engagedInCombat=true;await narrate('Something shifts underfoot. Your careful route turns into a confrontation.');await enemyTurn();}return;
+ }
+ if(['topple','blast','push','break','cut','shoot','drop','obstruct','extinguish','throw','use','touch'].includes(action)){
+  const magic=/wand|spell|magic|blast|arcane/.test(method); const ranged=/shoot|arrow|bow|wand|spell|blast/.test(method)||['shoot','blast'].includes(action);
+  const stat=magic?'INT':ranged?'DEX':'STR';
+  await narrate(`You try to use the ${o.name} to change the situation rather than simply trade attacks.`);
+  const r=await beginRoll(20,`Manipulate ${o.name}`);
+  if(r===20||(r!==1&&r+mod(stat)>=diff+1)){
+   if(id==='bookcase'){e.obstacle='collapsed bookcase';e.blocked=true;g.cover=true;await narrate('The weakened bookcase crashes across the aisle in a storm of dust and wood. It now blocks the most direct route between you and the skeleton.','reward');}
+   else if(id==='chandelier'){const dam=d(6)+d(6);e.hp=Math.max(0,e.hp-dam);e.awareness='alert';e.engagedInCombat=true;await narrate(`The chandelier tears free and crashes into the patrol route for ${dam} damage. The skeleton reels beneath the wreckage.`,'reward');}
+   else if(id==='planks'||id==='rope'){e.blocked=true;e.obstacle='damaged bridge';await narrate('Part of the bridge gives way. The bandit now has to contend with unstable footing before closing or repositioning.','reward');}
+   else if(id==='lantern'){e.awareness='suspicious';g.hidden=true;await narrate('The light vanishes and the chamber falls into confused shadow. You have created a moment to move unseen.','reward');}
+   else if(id==='statues'||id==='shields'){g.opening=true;await narrate('The sentinel hesitates rather than risk striking the memorial. You have manufactured an opening in its guard.','reward');}
+   else {e.blocked=true;await narrate(`Your use of the ${o.name} changes the battlefield and forces your opponent to adjust.`,'reward');}
+   if(e.hp===0){const xp=combatXP(e);await narrate(`${e.name} is defeated by the environment. You earn ${xp} XP.`,'reward');await gainXP(xp);if(e.villageBoss)await villageBossDefeated();} 
+  } else {e.awareness='alert';e.engagedInCombat=true;await narrate(`The attempt fails to produce the effect you wanted, and ${e.name} realizes exactly where you are.`);await enemyTurn();}
+  return;
+ }
+ if(['inspect','search'].includes(action)){await narrate(o.detail);return}
+ await narrate(`You consider the ${o.name}, but that particular use is not clear enough to resolve. Nothing changes.`);
+}
+function nextStoryKey(){if(g.room===3)return 'cryptcaptain';if(g.room===0)return pick(['bonepatrol','raiders','swarm']);if(g.room===2&&Math.random()<.7)return pick(['bonepatrol','raiders','swarm']);if(!Array.isArray(g.storyDeck)||!g.storyDeck.length){const keys=['watch','lost','bridge','wounded','bells','reliquary','altar','trader','alchemy','tollkeeper','flooded','archer','chained','argument'];for(let i=keys.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[keys[i],keys[j]]=[keys[j],keys[i]];}g.storyDeck=keys;}return g.storyDeck.pop();}
+function sceneInfo(){return g?.enemy?.sceneKey?STORY[g.enemy.sceneKey]:null}
+function isPeaceful(){return !!(g.enemy?.resolvedPeacefully)}
+async function peacefulExit(text,xp=8){const e=g.enemy;if(e?.resolvedPeacefully||g.encounterRewarded)return;if(isGroupEncounter()){for(const foe of g.enemies){foe.hp=0;foe.looted=true;foe.resolvedPeacefully=true}g.encounterLooted=true;g.encounterRewarded=true}else{e.hp=0;e.looted=true;e.resolvedPeacefully=true;e.encounterRewarded=true}await narrate(text,'reward');if(xp){const reward=isGroupEncounter()?Math.max(xp,Math.round(encounterXPValue()*.85)):xp;await narrate(`Encounter resolved without a kill — ${reward} XP.`,'reward');await gainXP(reward);}}
+const clsIds=Object.keys(CLASS);let chosen='rogue',chosenTalent='Explosive Shot',g=null, busy=false,pending=null,serial=0,queue=[],speaking=false,voiceOn=false,voices=[],pendingLevel=false;
+const synth=window.speechSynthesis||null;const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function getVoice(){const i=$('voice').value;return voices.find(v=>v.voiceURI===i)||null}
+function loadVoices(){if(!synth)return;voices=synth.getVoices().filter(v=>/^en\b/i.test(v.lang));const el=$('voice'),old=el.value;el.replaceChildren(new Option('Browser default',''));voices.forEach(v=>el.add(new Option(v.name+' · '+v.lang,v.voiceURI)));el.value=[...el.options].some(o=>o.value===old)?old:'';}
+if(synth){loadVoices();synth.addEventListener?.('voiceschanged',loadVoices);}else $('voiceStatus').textContent='Speech synthesis unavailable; timed narration still works.';
+function stopVoice(){if(synth)try{synth.cancel()}catch(e){}}
+function setVoice(on){voiceOn=!!on&&!!synth;stopVoice();$('voiceToggle').textContent=voiceOn?'Mute voice':'Enable voice';$('voiceStatus').textContent=voiceOn?'Waiting for actual speech completion between lines.':'Voice off: short timed text pacing.';}
+$('voiceToggle').onclick=()=>setVoice(!voiceOn);$('testVoice').onclick=()=>{if(!synth)return;setVoice(true);void speak('Welcome, adventurer. When the Dungeon Master finishes speaking, you may decide your next move.');};
+$('rate').oninput=()=>{$('rateLabel').textContent=(+$('rate').value).toFixed(2)+'×'};$('gap').oninput=()=>{$('gapLabel').textContent=(+$('gap').value).toFixed(1)+'s'};
+function speak(text){if(!synth||!voiceOn)return sleep(Math.min(3400,Math.max(650,text.length*32)));return new Promise(resolve=>{let ended=false;const u=new SpeechSynthesisUtterance(text);u.rate=+$('rate').value;u.pitch=.94;u.voice=getVoice();let watchdog;const done=()=>{if(ended)return;ended=true;clearTimeout(watchdog);resolve()};u.onend=done;u.onerror=done;watchdog=setTimeout(()=>{stopVoice();done()},Math.max(12000,text.split(/\s+/).length*1200/u.rate+12000));try{synth.speak(u)}catch(e){done()}})}
+async function narrate(text,type=''){const mine=serial,box=$('journal');box.querySelector('.latest')?.classList.remove('latest');const el=document.createElement('p');el.className='line latest '+type;el.textContent=text;box.append(el);if(box.children.length>170)box.firstElementChild.remove();box.scrollTop=box.scrollHeight;await speak(text);if(mine!==serial)return;if(voiceOn)await sleep(+$('gap').value*1000);}
+function levelNeed(l){return 18+l*12}function talentRank(k){return g?.talents?.[k]||0}function hasTalent(k){return talentRank(k)>0}function hasHealingHerbs(){return hasTalent('Field Medicine')}function talentEligible(k){const t=TALENT[k];return !!t&&(!t.class||t.class===g.cls)}function talentScope(k){const t=TALENT[k];return !t?.class?'Shared':CLASS[t.class].name+' only'}function combatXP(e){return 7+2*g.floor+(e?.type==='boss'||e?.villageBoss?10:0)}function maxStamina(){return CLASS[g.cls].baseStamina+Math.floor((cls().level-1)/2)}function maxMana(){return CLASS[g.cls].baseMana+(g.cls==='mage'?Math.floor((cls().level-1)/2)*2:0)}function observeBonus(){return mod('WIS')+Math.floor((g.adventureLevel-1)/4)+(hasTalent('Keen Senses')?2:0)+talentRank('Observation')}function maxHP(){return CLASS[g.cls].baseHP+(g.classes[g.cls].level-1)*3+(g.stats.CON-10)*2+g.adventureLevel*2}function mod(k){return Math.floor((g.stats[k]-10)/2)}function rank(skill){return g.classes[g.cls].skills[skill]||0}function defend(){return 10+mod('DEX')+Math.floor(g.adventureLevel/5)+(rank('Evasive Footwork')||rank('Iron Guard')||rank('Mana Shield'))}function cls(){return g.classes[g.cls]}
+function fresh(name,initial,manual){const classes={};for(const k of clsIds)classes[k]={level:1,xp:0,points:0,skills:{},equip:{melee:CLASS[k].weapons[0],ranged:CLASS[k].weapons[1]}};let inv=[...new Set(clsIds.flatMap(k=>CLASS[k].weapons))];return {name,cls:initial,manual,adventureLevel:1,adventureXP:0,attributePoints:0,talentPoints:0,talents:{[chosenTalent]:1},classStarters:{[initial]:chosenTalent},stats:{STR:10,DEX:10,CON:10,INT:10,WIS:10,CHA:10},classes,inventory:inv,gold:10,potions:2,manaPotions:initial==='mage'?1:0,staminaPotions:initial==='mage'?0:1,hp:CLASS[initial].baseHP+2,stamina:CLASS[initial].baseStamina,mana:CLASS[initial].baseMana,weaponBonus:0,floor:1,room:0,best:1,deaths:0,active:true,enemy:null,enemies:[],targetIndex:0,groupEncounter:false,encounterRewarded:false,encounterLooted:false,opening:false,openingReason:'',hidden:false,exposed:false,prepared:null,missStreak:0,atCamp:true,inVillage:false,village:{location:'square',visited:{},clues:{},flags:{},timeIndex:1,attempts:{},quests:{}},villageBossFight:false,switchedThisRoom:false,range:'far',cover:false,history:0};}
+function store(){if(g){try{localStorage.setItem('endlessDescentV20',JSON.stringify(g));$('save').textContent='Saved ✓';setTimeout(()=>$('save').textContent='Save',1200)}catch(e){$('save').textContent='Save unavailable'}}}
+function restore(){try{let saved=JSON.parse((localStorage.getItem('endlessDescentV20')||localStorage.getItem('endlessDescentV192')||localStorage.getItem('endlessDescentV191')||localStorage.getItem('endlessDescentV19')||localStorage.getItem('endlessDescentV171')||localStorage.getItem('endlessDescentV17')||localStorage.getItem('endlessDescentV16')||localStorage.getItem('endlessDescentV15')||localStorage.getItem('endlessDescentV14')||localStorage.getItem('endlessDescentV12')||localStorage.getItem('endlessDescentV11')||localStorage.getItem('endlessDescentV09')));if(saved?.classes?.rogue&&saved?.stats&&saved?.inventory){saved.range=ZONES.includes(saved.range)?saved.range:'far';saved.cover=!!saved.cover;saved.inVillage=!!saved.inVillage;saved.village=saved.village||{location:'square',visited:{},clues:{},flags:{}};saved.village.location=saved.village.location||'square';saved.village.visited=saved.village.visited||{};saved.village.clues=saved.village.clues||{};saved.village.flags=saved.village.flags||{};saved.village.timeIndex=Number.isInteger(saved.village.timeIndex)?saved.village.timeIndex:1;saved.village.attempts=saved.village.attempts||{};saved.village.quests=saved.village.quests||{};saved.villageBossFight=!!saved.villageBossFight;saved.talents=saved.talents||{};if(saved.talents['Healing Herb']||saved.talents['Healing Herbs'])saved.talents['Field Medicine']=Math.max(saved.talents['Field Medicine']||0,saved.talents['Healing Herb']||0,saved.talents['Healing Herbs']||0);delete saved.talents['Healing Herb'];delete saved.talents['Healing Herbs'];saved.talentPoints=saved.talentPoints||0;saved.manaPotions=Number.isFinite(saved.manaPotions)?saved.manaPotions:(saved.cls==='mage'?1:0);saved.staminaPotions=Number.isFinite(saved.staminaPotions)?saved.staminaPotions:(saved.cls==='mage'?0:1);saved.classStarters=saved.classStarters||{};for(const k of clsIds){if(!saved.classStarters[k]){const owned=CLASS[k].starterTalents.find(t=>(saved.talents[t]||0)>0);if(owned)saved.classStarters[k]=owned}}if(!Object.keys(saved.talents).length)saved.talentPoints=Math.max(1,saved.talentPoints);saved.stamina=Number.isFinite(saved.stamina)?saved.stamina:(CLASS[saved.cls]?.baseStamina||0);saved.mana=Number.isFinite(saved.mana)?saved.mana:(CLASS[saved.cls]?.baseMana||0);saved.prepared=saved.prepared||null;saved.openingReason=saved.openingReason||'';saved.missStreak=saved.missStreak||0;saved.enemies=Array.isArray(saved.enemies)?saved.enemies:[];saved.targetIndex=Number.isInteger(saved.targetIndex)?saved.targetIndex:0;saved.groupEncounter=!!saved.groupEncounter;saved.encounterRewarded=!!saved.encounterRewarded;saved.encounterLooted=!!saved.encounterLooted;return saved}}catch(e){}return null}
+function resetTransient(){pending=null;serial++;stopVoice();$('rollPanel').hidden=true;$('actionPanel').hidden=true;busy=false;}
+$('save').onclick=store;
+$('liveDiceMode').addEventListener('change',()=>{if(!g)return;g.manual=$('liveDiceMode').value==='manual';store();$('rollContext').textContent=g.manual?'Physical dice enabled.':'Automatic dice enabled.';});
+function portablePayload(){store();return JSON.stringify({game:'The Endless Descent',version:'2.0.3',savedAt:new Date().toISOString(),state:g},null,2)}
+function openSaveModal(mode){const modal=$('saveModal'),box=$('saveCode'),title=$('saveModalTitle'),help=$('saveModalHelp'),primary=$('saveModalPrimary'),status=$('saveModalStatus');status.textContent='';modal.classList.remove('hidden');if(mode==='export'){title.textContent='Copy portable save code';help.textContent='Copy this text and keep it anywhere you like. Paste it into a newer build to continue the same adventure.';box.value=portablePayload();box.readOnly=true;primary.textContent='Copy save code';primary.onclick=async()=>{box.focus();box.select();try{await navigator.clipboard.writeText(box.value);status.textContent='Save code copied.'}catch(e){document.execCommand('copy');status.textContent='Save code selected. If it did not copy automatically, press Ctrl+C.'}}}else{title.textContent='Import portable save code';help.textContent='Paste an Endless Descent save code here. This does not require a downloaded file.';box.value='';box.readOnly=false;primary.textContent='Import save';primary.onclick=()=>{try{const raw=JSON.parse(box.value.trim()),state=raw?.state||raw;if(!state?.classes?.rogue||!state?.stats||!state?.inventory)throw new Error('Invalid save');state.village=state.village||{location:'square',visited:{},clues:{},flags:{},timeIndex:1,attempts:{},quests:{}};state.village.quests=state.village.quests||{};state.village.flags=state.village.flags||{};state.village.attempts=state.village.attempts||{};state.villageBossFight=false;state.manaPotions=Number.isFinite(state.manaPotions)?state.manaPotions:(state.cls==='mage'?1:0);state.staminaPotions=Number.isFinite(state.staminaPotions)?state.staminaPotions:(state.cls==='mage'?0:1);state.classStarters=state.classStarters||{};if(state.talents){for(const k of clsIds){if(!state.classStarters[k]){const owned=CLASS[k].starterTalents.find(t=>(state.talents[t]||0)>0);if(owned)state.classStarters[k]=owned}}if(state.talents['Healing Herb']||state.talents['Healing Herbs'])state.talents['Field Medicine']=Math.max(state.talents['Field Medicine']||0,state.talents['Healing Herb']||0,state.talents['Healing Herbs']||0);delete state.talents['Healing Herb'];delete state.talents['Healing Herbs'];}localStorage.setItem('endlessDescentV20',JSON.stringify(state));status.textContent='Save imported. Reloading…';setTimeout(()=>location.reload(),500)}catch(err){status.textContent='That text does not appear to be a valid Endless Descent save.'}}}}
+$('saveModalClose').onclick=()=>$('saveModal').classList.add('hidden');
+$('exportSave').onclick=()=>{if(!g)return;openSaveModal('export')};
+$('importSave').onclick=()=>openSaveModal('import');
+$('importFileBtn').onclick=()=>$('importFile').click();
+$('importFile').onchange=async e=>{const file=e.target.files?.[0];if(!file)return;try{const raw=JSON.parse(await file.text()),state=raw?.state||raw;if(!state?.classes?.rogue||!state?.stats||!state?.inventory)throw new Error('Invalid save');state.village=state.village||{location:'square',visited:{},clues:{},flags:{},timeIndex:1,attempts:{},quests:{}};state.village.quests=state.village.quests||{};state.village.flags=state.village.flags||{};state.village.attempts=state.village.attempts||{};state.villageBossFight=false;state.manaPotions=Number.isFinite(state.manaPotions)?state.manaPotions:(state.cls==='mage'?1:0);state.staminaPotions=Number.isFinite(state.staminaPotions)?state.staminaPotions:(state.cls==='mage'?0:1);state.classStarters=state.classStarters||{};if(state.talents){for(const k of clsIds){if(!state.classStarters[k]){const owned=CLASS[k].starterTalents.find(t=>(state.talents[t]||0)>0);if(owned)state.classStarters[k]=owned}}if(state.talents['Healing Herb']||state.talents['Healing Herbs'])state.talents['Field Medicine']=Math.max(state.talents['Field Medicine']||0,state.talents['Healing Herb']||0,state.talents['Healing Herbs']||0);delete state.talents['Healing Herb'];delete state.talents['Healing Herbs'];}localStorage.setItem('endlessDescentV20',JSON.stringify(state));alert('Save imported successfully. The game will reload with that adventurer.');location.reload()}catch(err){alert('That file does not appear to be a valid Endless Descent save.')}finally{e.target.value=''}};
+$('reset').onclick=()=>{if(!confirm('Start a new adventurer? Existing saved progress will be deleted.'))return;localStorage.removeItem('endlessDescentV20');localStorage.removeItem('endlessDescentV192');localStorage.removeItem('endlessDescentV191');localStorage.removeItem('endlessDescentV19');localStorage.removeItem('endlessDescentV171');localStorage.removeItem('endlessDescentV17');localStorage.removeItem('endlessDescentV16');localStorage.removeItem('endlessDescentV15');localStorage.removeItem('endlessDescentV14');localStorage.removeItem('endlessDescentV12');localStorage.removeItem('endlessDescentV11');localStorage.removeItem('endlessDescentV09');resetTransient();g=null;$('game').hidden=true;$('create').hidden=false;$('journal').replaceChildren();$('load').hidden=true;};
+function renderTalentPick(){const box=$('talentPick');box.replaceChildren();const opts=CLASS[chosen].starterTalents; if(!opts.includes(chosenTalent))chosenTalent=opts[0]; for(const t of opts){const b=safeBtn(t+' — '+TALENT[t].desc,()=>{chosenTalent=t;renderTalentPick()});b.classList.toggle('primary',t===chosenTalent);box.append(b)}}function chooseClass(k){chosen=k;document.querySelectorAll('#classPick button').forEach(x=>x.classList.toggle('primary',x.dataset.cls===k));chosenTalent=CLASS[k].starterTalents[0];renderTalentPick();}
+for(const k of clsIds){const b=document.createElement('button');b.className='btn';b.dataset.cls=k;b.innerHTML='<strong>'+CLASS[k].name+'</strong><br><span class="tiny">'+CLASS[k].desc+'</span>';b.onclick=()=>chooseClass(k);$('classPick').append(b)}chooseClass('rogue');renderTalentPick();if(restore()){$('load').hidden=false;$('load').onclick=()=>{g=restore();startGame(true)}};
+$('start').onclick=()=>{g=fresh($('heroName').value.trim()||'Rowan',chosen,$('diceMode').value==='manual');startGame(false)};
+async function startGame(resume){resetTransient();$('create').hidden=true;$('game').hidden=false;g.active=!!g.active;g.inVillage=false;g.atCamp=true;g.enemy=null;g.opening=false;g.hidden=false;g.exposed=false;g.cover=false;g.switchedThisRoom=false;g.hp=clamp(g.hp,1,maxHP());g.stamina=clamp(g.stamina??maxStamina(),0,maxStamina());g.mana=clamp(g.mana??maxMana(),0,maxMana());show();busy=true;await narrate(resume?'You return to the dungeon camp with your memories, equipment, and hard-earned experience intact.':`Your camp lies where the old road divides. The iron dungeon gates descend into darkness in one direction; in the other, mist hangs over the rooftops of ${VILLAGE_NAME}.`);await promptChoice(resume?'At camp, you may return to the dungeon or visit the village. What would you like to do?':'Your first expedition can wait a moment if you wish. Where would you like to go?',campMenu());busy=false;store();}
+function safeBtn(text,fn){const b=document.createElement('button');b.className='btn';b.textContent=text;b.onclick=fn;return b}
+function menu(choices){$('rollPanel').hidden=true;$('actionPanel').hidden=false;$('choices').replaceChildren();choices.forEach(([text,cmd])=>{$('choices').append(safeBtn(text,()=>act(cmd)))});$('turnState').textContent='Your turn';$('actionTitle').textContent='Your move';show();}
+async function promptChoice(cue,opts){if(!g?.active)return;await narrate(cue,'cue');menu(opts);}
+function beginRoll(n,label){if(!g.manual)return Promise.resolve(d(n));$('actionPanel').hidden=true;$('rollPanel').hidden=false;$('turnState').textContent='Roll required';$('rollTitle').textContent=label+' — d'+n;$('rollContext').textContent='Roll your physical die and type the face value.';$('rollInput').value='';$('rollInput').max=String(n);$('rollError').textContent='';return new Promise(resolve=>{pending={n,resolve};requestAnimationFrame(()=>{$('rollInput').focus({preventScroll:true});$('rollInput').select()})})}
+$('rollSubmit').onclick=submitRoll;$('rollInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();submitRoll()}});
+function submitRoll(){if(!pending)return;const txt=$('rollInput').value.trim(),n=Number(txt);if(!txt||!Number.isInteger(n)||n<1||n>pending.n){$('rollError').textContent='Enter a whole number from 1 to '+pending.n;return;}let resolve=pending.resolve;pending=null;$('rollPanel').hidden=true;resolve(n);}
+function aliveEnemies(){return (g?.enemies||[]).filter(e=>e&&e.hp>0)}
+function isGroupEncounter(){return !!(g?.groupEncounter&&Array.isArray(g.enemies)&&g.enemies.length>1)}
+function syncTarget(){if(!isGroupEncounter())return g?.enemy||null;const alive=aliveEnemies();if(!alive.length){g.enemy=g.enemies[0]||g.enemy;return g.enemy}let target=g.enemies[g.targetIndex];if(!target||target.hp<=0){target=alive[0];g.targetIndex=g.enemies.indexOf(target)}g.enemy=target;g.range=target.range||g.range;return target}
+function encounterXPValue(){if(!isGroupEncounter())return g.enemy?combatXP(g.enemy):0;const base=g.enemies.reduce((sum,e)=>sum+(e.role==='boss'?18:e.role==='support'?8:e.role==='ranged'?8:7),0);return Math.max(18,base+g.floor*3)}
+async function finishGroupEncounter(){if(!isGroupEncounter()||aliveEnemies().length||g.encounterRewarded)return false;g.encounterRewarded=true;const xp=encounterXPValue();await narrate(`The last enemy falls. Encounter cleared — ${xp} XP.`,'reward');await gainXP(xp);show();return true}
+async function groupLoot(){if(!isGroupEncounter()||aliveEnemies().length){await narrate('The fight is not over yet.');return}if(g.encounterLooted){await narrate('You have already searched the fallen group. Nothing else useful remains.');return}g.encounterLooted=true;const coins=d(8)+d(8)+g.floor*3+g.enemies.length*2;g.gold+=coins;await narrate(`You search the defeated enemies and gather ${coins} gold between their pouches and equipment.`,'reward');if(d(3)===1){g.potions++;await narrate('You also recover one intact healing draught.','reward')}show()}
+async function aoeDamage(label,costType,cost,targets,die,bonus=0,control=null){if(!targets.length){await narrate('There is no valid target for that ability.');return false}if(costType==='stamina'){if(g.stamina<cost){await narrate(`You need ${cost} Stamina for ${label}.`);return false}g.stamina-=cost}else{if(g.mana<cost){await narrate(`You need ${cost} Mana for ${label}.`);return false}g.mana-=cost}await narrate(`${label} catches ${targets.length===1?targets[0].name:targets.length+' enemies'} in its effect.`);for(const e of targets){const roll=await beginRoll(die,`${label} damage`);const dmg=Math.max(1,roll+bonus+g.weaponBonus);e.hp=Math.max(0,e.hp-dmg);await narrate(`${e.name} takes ${dmg} damage${e.hp?` and has ${e.hp} HP left`:' and falls'}.`,'reward');if(control&&e.hp>0)control(e)}await finishGroupEncounter();syncTarget();show();if(aliveEnemies().length)await enemyTurn();return true}
+function show(){if(!g)return;$('liveDiceMode').value=g.manual?'manual':'auto';$('heroTitle').textContent=g.name+' · '+CLASS[g.cls].name;$('location').textContent=g.villageBossFight?'Beneath the Venn House · Bell Chamber':g.inVillage?(VILLAGE[g.village.location]?.name||VILLAGE_NAME):g.atCamp?'Adventurer’s Camp':`Floor ${g.floor} · Chamber ${g.room+1}/4`;const values=[['HP',`${g.hp}/${maxHP()}`],['Stamina',`${g.stamina}/${maxStamina()}`],['Mana',`${g.mana}/${maxMana()}`],['Defense',defend()],['Gold',g.gold],['Potions',g.potions]];$('miniStats').replaceChildren(...values.map(([a,b])=>{let x=document.createElement('div');x.className='stat';x.innerHTML='<div class="tiny">'+a+'</div><div class="value">'+b+'</div>';return x}));$('xpBars').textContent=`Adventurer XP ${g.adventureXP}/${levelNeed(g.adventureLevel)} · ${CLASS[g.cls].name} XP ${cls().xp}/${levelNeed(cls().level)} · Best floor ${g.best} · Deaths ${g.deaths}`;const tags=[];if(isGroupEncounter()){syncTarget();for(const [i,e] of g.enemies.entries()){if(e.hp>0)tags.push(`${i===g.targetIndex?'▶ ':''}${e.name}: ${e.hp}/${e.max} HP · ${e.role||'enemy'}`)}}else if(g.enemy?.hp>0){tags.push(`${g.enemy.name}: ${g.enemy.hp}/${g.enemy.max} HP`,g.range==='far'?'Across the chamber':g.range==='near'?'A few paces away':'Within arm’s reach');if(g.enemy.injuredLeg)tags.push('Visible leg injury');if(g.enemy.swordMoved)tags.push('Weapon out of reach');}if(g.enemy?.hp>0){if(g.enemy.awareness==='unaware')tags.push('Not yet noticed');else if(g.enemy.awareness==='suspicious')tags.push('Enemy wary');if(g.enemy.obstacle&&g.cover)tags.push('Sheltered by '+g.enemy.obstacle);if(g.cover)tags.push('Behind cover');}if(g.opening)tags.push(g.openingReason?`Opening ✦ ${g.openingReason}`:'Opening available ✦');if(g.hidden)tags.push('Hidden');if(g.exposed)tags.push('Exposed: enemy +2 hit');if(g.attributePoints)tags.push(`${g.attributePoints} attribute point(s) unspent`);if(cls().points)tags.push(`${cls().points} class skill point(s) unspent`);if(g.talentPoints)tags.push(`${g.talentPoints} talent point(s) unspent`);if((g.missStreak||0)>=2)tags.push('Stalemate: tactical break available');if(g.prepared)tags.push(g.prepared==='arcane'?'Arcane Charge ready':g.prepared==='brace'?'Braced for charge':g.prepared==='snare'?'Snare prepared':'Prepared');if(g.inVillage)tags.push(['Morning','Day','Evening','Night','After midnight'][g.village.timeIndex||0]);$('badges').replaceChildren(...tags.map(t=>{let a=document.createElement('span');a.className='tag'+(/Opening/.test(t)?' open':/Exposed/.test(t)?' exposed':'');a.textContent=t;return a}));renderSheet();$('classSwitch').disabled=!(g.atCamp||g.inVillage||(!g.enemy?.hp&&!g.switchedThisRoom));}
+let tab='stats';document.querySelectorAll('#sheetTabs button').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;renderSheet()});
+function renderSheet(){if(!g)return;document.querySelectorAll('#sheetTabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===tab?'true':'false'));const body=$('sheetBody');body.replaceChildren();const div=(html,clsName='')=>{const el=document.createElement('div');el.className=clsName;el.innerHTML=html;body.append(el);return el};
+if(tab==='stats'){div(`<div class="sub">Permanent across classes. Your attributes begin at 10. Earn one attribute point every 3 adventurer levels.</div><h3>Unspent: ${g.attributePoints}</h3>`);for(const a of Object.keys(g.stats)){let row=document.createElement('div');row.className='row item between';let help={STR:'Melee accuracy',DEX:'Ranged accuracy, dodge',CON:'Maximum health',INT:'Arcane accuracy',WIS:'Observation and exploration checks',CHA:'Merchant discounts'}[a];let label=document.createElement('span');label.textContent=`${a}: ${g.stats[a]} (${mod(a)>=0?'+':''}${mod(a)}) · ${help}`;row.append(label);if(g.attributePoints){let b=safeBtn('Increase +1',()=>{g.stats[a]++;g.attributePoints--;g.hp=Math.min(maxHP(),g.hp+(a==='CON'?2:0));show();store()});b.classList.add('small');row.append(b)}body.append(row)} }
+if(tab==='combat'){div(`<div class="sub">Defense ${defend()} · Weapon improvement +${g.weaponBonus} damage · Position: ${g.range} · Stamina ${g.stamina}/${maxStamina()} · Mana ${g.mana}/${maxMana()}</div>`);for(const type of ['melee','ranged']){let item=cls().equip[type],w=GEAR[item];div(`<div class="item"><strong>${type==='melee'?'Melee':'Ranged'}: ${item}</strong> · d${w.die} · critical ${w.crit || 20}–20 · mishap ${w.fail || 1}<div class="tiny">${w.desc}</div></div>`)}div(`<p class="tiny">A normal attack uses d20 + your attack bonus against enemy defense, but defense now changes hit quality rather than causing constant whiffs. Natural 1 is the standard true miss; low results usually become glancing hits. Strength governs melee attacks; Dexterity governs bows; Intelligence governs wand magic. Ranged attacks require Far or Near distance; once Engaged, you must use your melee weapon or create distance first. Mage wand attacks are the reliable ranged option and the staff is required in close combat. Class specials are tactical tools, not automatic upgrades: Shadow Strike needs stealth/an Opening, Shield Bash trades damage for control, and Arcane Burst needs a prepared firing window.</p>`) }
+if(tab==='skills'){div(`<div class="sub">${CLASS[g.cls].name} class points: ${cls().points}. Shared talent points: ${g.talentPoints}. Starting and learned talents remain with your adventurer.</div>`);for(const k of CLASS[g.cls].skills){let r=rank(k),row=document.createElement('div');row.className='item';row.innerHTML=`<strong>${k}</strong> · Rank ${r}/${SKILL[k].max}<div class="tiny">${SKILL[k].desc}</div>`;if(cls().points&&r<SKILL[k].max){let b=safeBtn('Spend class point',()=>{cls().points--;cls().skills[k]=r+1;show();store()});b.classList.add('small');row.append(b)}body.append(row)}div('<h3>Talents</h3><div class="tiny">Talent points come from adventurer levels. Some talents unlock new actions rather than simple bonuses.</div>');for(const k of Object.keys(TALENT).sort((a,b)=>(talentRank(b)>0)-(talentRank(a)>0)||a.localeCompare(b))){let r=talentRank(k),eligible=talentEligible(k),row=document.createElement('div');row.className='item';row.innerHTML=`<strong>${k}</strong>${r?' · Owned':''} · <span class="tiny">${talentScope(k)}</span><div class="tiny">${TALENT[k].desc}</div>`;if(g.talentPoints&&!r&&eligible){let b=safeBtn('Learn · 1 point',()=>{g.talentPoints--;g.talents[k]=1;show();store()});b.classList.add('small');row.append(b)}else if(!r&&!eligible){let note=document.createElement('div');note.className='tiny';note.textContent=`Switch to ${CLASS[TALENT[k].class].name} to learn this class talent.`;row.append(note)}body.append(row)}}
+if(tab==='inventory'){div(`<div class="sub">Shared backpack · ${g.inventory.length} unique weapons · ${g.potions} healing potions · ${g.manaPotions||0} mana potions · ${g.staminaPotions||0} endurance tonics · ${g.gold} gold. Equipment loadouts are remembered separately for every class.</div>`);for(const item of g.inventory){let row=document.createElement('div');row.className='item';let w=GEAR[item];row.innerHTML=`<strong>${item}</strong> · ${w.type} d${w.die}<div class="tiny">${w.desc}</div>`;let isEq=cls().equip[w.type]===item;let b=safeBtn(isEq?'Equipped':`Equip for ${CLASS[g.cls].name}`,()=>{cls().equip[w.type]=item;show();store()});b.classList.add('small');b.disabled=isEq;row.append(b);body.append(row)}}
+if(tab==='classes'){div('<div class="sub">Permanent adventurer XP and attributes are shared. Each class retains its own level, XP, skills and equipment. Switch at camp, in the village, or after clearing a chamber.</div>');for(const id of clsIds){const c=g.classes[id];div(`<div class="item"><strong>${CLASS[id].name}</strong>${g.cls===id?' (active)':''} · Level ${c.level}<div class="tiny">XP ${c.xp}/${levelNeed(c.level)} · Unspent skills ${c.points}</div></div>`)}}
+if(tab==='clues'){const ids=Object.keys(g.village?.clues||{}).filter(k=>g.village.clues[k]);div(`<div class="sub">Clues discovered in ${VILLAGE_NAME}: ${ids.length}. Clues persist and can unlock new observations or actions in other locations.</div>`);if(!ids.length)div('<div class="item tiny">You have not recorded any village clues yet.</div>');for(const id of ids){const c=CLUES[id];if(c)div(`<div class="item"><strong>${c.title}</strong><div class="tiny">${clueText(id)}</div></div>`)}}
+if(tab==='quests'){const qs=g.village?.quests||{};const ids=Object.keys(qs);div(`<div class="sub">Gloamwick quests: ${ids.length}. Quest stages update as your clues, conversations, and actions change.</div>`);if(!ids.length)div('<div class="item tiny">No one has given you a formal task yet, but following the village clues may change that.</div>');for(const id of ids){const q=QUESTS[id],st=qs[id];if(!q)continue;div(`<div class="item"><strong>${q.title}</strong> · ${st.status==='completed'?'Completed':'Active'}<div class="tiny">${questObjective(id)}<br><em>Reward:</em> ${q.reward}</div></div>`)}}
+}
+function campMenu(){return [['Enter the dungeon','enter'],[`Walk to ${VILLAGE_NAME}`,'village'],['Change class','switch'],...(g.potions>0?[['Drink healing potion','potion']]:[]),...((g.manaPotions||0)>0&&maxMana()>0?[['Drink mana potion','mana_potion']]:[]),...((g.staminaPotions||0)>0&&maxStamina()>0?[['Drink endurance tonic','stamina_potion']]:[]),...(['rogue','warrior'].includes(g.cls)&&g.stamina<maxStamina()?[[g.cls==='rogue'?'Catch your breath · regain Stamina':'Second Wind · regain Stamina','recover_stamina']]:[]),...(hasHealingHerbs()?[['Field Medicine · healing herbs · 3 Stamina','talent_healing_herbs']]:[]),['Review your character sheet','sheet'],['Review quest log','sheet_quests']]}
+function villageMenu(loc=g.village.location){const base=[...(VILLAGE[loc]?.choices||[])].map(([label,cmd])=>cmd==='village:smith:upgrade'?[`Ask Tessa to improve your weapons · ${18+g.weaponBonus*10} gold`,cmd]:[label,cmd]);if(loc==='house'&&hasClue('cellar_seam'))base.splice(1,0,['Open the concealed foundation door','village:go:cellar']);if(loc==='smith'&&quest('silver_clapper')?.status==='active'&&quest('silver_clapper').stage===0)base.splice(1,0,['Ask Tessa to lend you the repaired clapper','village:quest:tessa_clapper']);if(loc==='chapel'&&g.village.flags.hasClapper&&quest('silver_clapper')?.status==='active')base.splice(1,0,['Show the silver clapper to Sister Elian','village:quest:elian_clapper']);if(loc==='chapel'&&quest('midnight_bell')?.stage===1)base.splice(1,0,['Tell Sister Elian you heard the midnight bell','village:quest:elian_midnight']);if(hasTalent('Thievery')&&loc==='store'&&!g.village.flags.thieveryStore)base.splice(1,0,['Case Merrow’s counter for an opening','village:skill:thievery']);if(hasTalent('Intimidation')&&['inn','store'].includes(loc))base.splice(1,0,['Press for answers · Intimidation','village:skill:intimidation']);if(hasTalent('Field Medicine')&&loc==='smith'&&!g.village.flags.medicineHelp)base.splice(1,0,['Offer Corren help treating a burn · Field Medicine','village:skill:medicine']);if(loc==='store'){base.splice(1,0,['Buy mana potion · 12 gold','village:buy:mana']);base.splice(2,0,['Buy endurance tonic · 10 gold','village:buy:stamina']);}if(loc==='square'){base.push(['Wait until the next part of the day','village:wait']);if((g.village.timeIndex||0)!==4)base.push(['Wait until after midnight','village:midnight']);}if(loc!=='square')base.push(['Review discovered clues','sheet_clues']);base.push(['Review quest log','sheet_quests']);return base;}
+function options(){
+ if(!g.active)return [['Begin another expedition','restart']];
+ if(g.inVillage)return villageMenu();
+ if(g.atCamp)return campMenu();
+ const e=syncTarget()||g.enemy,scene=sceneInfo();
+ if(isGroupEncounter()&&!aliveEnemies().length)return [...(!g.encounterLooted?[['Search the defeated enemies','lootgroup']]:[]),['Continue onward','continue'],['Return to camp','return_camp'],...(g.potions>0?[['Drink a healing potion','potion']]:[]),...((g.manaPotions||0)>0&&maxMana()>0?[['Drink mana potion','mana_potion']]:[]),...((g.staminaPotions||0)>0&&maxStamina()>0?[['Drink endurance tonic','stamina_potion']]:[]),...(hasHealingHerbs()?[['Field Medicine · healing herbs · 3 Stamina','talent_healing_herbs']]:[]),['Change class','switch']];
+ if(e?.hp>0){
+   const gear=cls().equip,choices=[];if(isGroupEncounter()){for(const [i,foe] of g.enemies.entries())if(foe.hp>0)choices.push([`${i===g.targetIndex?'Targeting':'Target'}: ${foe.name} · ${foe.hp}/${foe.max} HP`,`target:${i}`]);}
+   if(e.awareness!=='alert'&&!e.engagedInCombat){
+     choices.push(...(scene?.choices||[]).filter(([,cmd])=>!(cmd==='scene_observe'&&e.observed)&&!(cmd==='scene_cover'&&g.cover)));
+     if(roomObjects().length&&!e.discovered)choices.push(['Take a closer look around','inspect_room']);
+     if(g.range==='engaged')choices.push([`Strike with ${gear.melee}`,'melee']);
+     else choices.push([`Fire ${gear.ranged}`,'ranged']);
+     if(g.cls==='rogue')choices.push(['Move quietly into hiding','hide']);if(g.cls==='mage'&&g.mana<maxMana())choices.push([hasTalent('Deep Meditation')?'Deep Meditation · regain Mana':'Center yourself · regain Mana','center']);if(['rogue','warrior'].includes(g.cls)&&g.stamina<maxStamina())choices.push([g.cls==='rogue'?'Catch your breath · regain Stamina':'Second Wind · regain Stamina','recover_stamina']);if((g.manaPotions||0)>0&&maxMana()>0)choices.push(['Drink mana potion','mana_potion']);if((g.staminaPotions||0)>0&&maxStamina()>0)choices.push(['Drink endurance tonic','stamina_potion']);if(hasHealingHerbs())choices.push(['Field Medicine · healing herbs · 3 Stamina','talent_healing_herbs']);if(g.potions>0)choices.push(['Drink healing potion','potion']);if(e.sceneKey==='wounded'&&hasTalent('Restoration')&&g.mana>=4)choices.push(['Cast Restoration on the mercenary · 4 Mana','scene_restore']);
+     return choices;
+   }
+   if(g.range==='engaged')choices.push([`Attack with ${gear.melee}`,'melee']);
+   else choices.push([`Attack with ${gear.ranged}`,'ranged']);
+   const specialReady=g.cls==='rogue'?(g.range==='engaged'&&(g.opening||g.hidden||e.awareness==='unaware')):
+     g.cls==='warrior'?(g.range==='engaged'):
+     (g.range!=='engaged'&&(g.cover||e.blocked||e.stun||e.awareness==='unaware'||g.opening));
+   if(specialReady)choices.push([CLASS[g.cls].skills[0]+(g.opening?' ✦ Opening':'')+(g.cls==='mage'?' · 4 Mana':' · 3 Stamina'),'special']);if(g.cls==='mage'&&hasTalent('Arcane Charge')&&g.range!=='engaged'&&!g.prepared)choices.push(['Begin Arcane Charge · 3 Mana','talent_arcane']);if(g.cls==='rogue'&&hasTalent('Explosive Shot')&&g.range!=='engaged')choices.push(['Explosive Shot · 4 Stamina','talent_explosive']);if(g.cls==='rogue'&&hasTalent('Snarecraft')&&!g.prepared)choices.push(['Set a snare · 3 Stamina','talent_snare']);if(g.cls==='warrior'&&hasTalent('Brace')&&g.range!=='engaged'&&!g.prepared)choices.push(['Brace for the charge · 3 Stamina','talent_brace']);if((g.missStreak||0)>=2){const txt=g.cls==='mage'?'Blinding Flash & Withdraw · 2 Mana':g.cls==='rogue'?'Pocket Sand & Slip Away · 2 Stamina':'Shoulder Feint & Disengage · 2 Stamina';choices.push([txt,'break_stalemate']);}
+   if(g.cls==='rogue'&&g.hidden&&g.range!=='engaged')choices.push(['Sneak closer while staying hidden · 1 Stamina','sneak_advance']);if(g.cls==='rogue'&&e.obstacle!=='clear floor')choices.push(['Slip out of sight','hide']);
+   if(e.obstacle!=='clear floor'&&!g.cover&&g.range!=='engaged')choices.push(['Get behind the nearby cover','cover']);
+   if(g.range!=='engaged')choices.push(['Close in cautiously','approach']);
+   if(hasTalent('Sweeping Strike')&&g.cls==='warrior'&&g.range==='engaged'&&aliveEnemies().length>1)choices.push(['Sweeping Strike · 4 Stamina','talent_sweep']);
+   if(hasTalent('Hold the Line')&&g.cls==='warrior'&&g.range!=='engaged')choices.push(['Hold the Line · 3 Stamina','talent_hold']);
+   if(hasTalent('Smoke Bomb')&&g.cls==='rogue')choices.push(['Smoke Bomb · 3 Stamina','talent_smoke']);
+   if(hasTalent('Ricochet')&&g.cls==='rogue'&&g.range!=='engaged'&&aliveEnemies().length>1)choices.push(['Ricochet · 4 Stamina','talent_ricochet']);
+   if(hasTalent('Chain Lightning')&&g.cls==='mage'&&g.range!=='engaged'&&aliveEnemies().length>1)choices.push(['Chain Lightning · 5 Mana','talent_chain']);
+   if(hasTalent('Frost Nova')&&g.cls==='mage'&&aliveEnemies().length>1)choices.push(['Frost Nova · 5 Mana','talent_frost']);
+   if(hasTalent('Arcane Mine')&&g.cls==='mage'&&!g.prepared)choices.push(['Set Arcane Mine · 4 Mana','talent_mine']);
+   if(g.range!=='far')choices.push(['Try to put some distance between you','retreat']);
+   choices.push(['Fall back toward the passage','flee']);if(g.potions>0)choices.push(['Drink a healing potion','potion']);if((g.manaPotions||0)>0&&maxMana()>0)choices.push(['Drink mana potion','mana_potion']);if((g.staminaPotions||0)>0&&maxStamina()>0)choices.push(['Drink endurance tonic','stamina_potion']);if(g.cls==='mage'&&g.mana<maxMana())choices.push([hasTalent('Deep Meditation')?'Deep Meditation · regain Mana':'Center yourself · regain Mana','center']);if(['rogue','warrior'].includes(g.cls)&&g.stamina<maxStamina())choices.push([g.cls==='rogue'?'Catch your breath · regain Stamina':'Second Wind · regain Stamina','recover_stamina']);if(hasHealingHerbs())choices.push(['Field Medicine · healing herbs · 3 Stamina','talent_healing_herbs']);if(hasTalent('Restoration')&&g.mana>=4)choices.push(['Cast Restoration · 4 Mana','talent_restoration']);
+   return choices;
+ }
+ if(scene&&!e.done&&['trap','chest','shrine','merchant'].includes(e.type)){
+   if(e.type==='trap'&&e.trapInspected)return [['Study the mechanism again','inspect'],['Attempt to disarm the mechanism','disarm_trap'],['Step carefully between the bells','cross'],['Turn back and find the other passage','continue']];
+   return scene.choices;
+ }
+ if(e?.max&&e.hp===0&&g.villageBossFight)return [...(!e.looted?[['Search the Hollow Bellkeeper','lootcorpse']]:[]),['Return to the Venn cellar','village_boss_return']];
+ if(e?.max&&e.hp===0)return [...(!e.looted?[['Search the fallen enemy','lootcorpse']]:[]),['Continue onward','continue'],['Return to camp','return_camp'],...(g.potions>0?[['Drink a healing potion','potion']]:[]),...((g.manaPotions||0)>0&&maxMana()>0?[['Drink mana potion','mana_potion']]:[]),...((g.staminaPotions||0)>0&&maxStamina()>0?[['Drink endurance tonic','stamina_potion']]:[]),...(hasHealingHerbs()?[['Field Medicine · healing herbs · 3 Stamina','talent_healing_herbs']]:[]),['Change class','switch']];
+ return [['Continue onward','continue'],['Return to camp','return_camp'],...(g.potions>0?[['Drink a healing potion','potion']]:[]),...((g.manaPotions||0)>0&&maxMana()>0?[['Drink mana potion','mana_potion']]:[]),...(hasHealingHerbs()?[['Field Medicine · healing herbs · 3 Stamina','talent_healing_herbs']]:[]),['Change class','switch']];
+}
+async function chamber(){
+ g.atCamp=false;g.switchedThisRoom=false;g.opening=g.hidden=g.exposed=false;g.cover=false;
+ const key=nextStoryKey(),scene=STORY[key],type=scene.type;
+ let e={type,name:scene.name,sceneKey:key,done:false,engagedInCombat:false,discovered:false};g.enemies=[];g.groupEncounter=false;g.encounterRewarded=false;g.encounterLooted=false;g.targetIndex=0;
+ if(type==='enemy'||type==='boss'){
+  if(Array.isArray(scene.group)){
+   g.groupEncounter=true;g.enemies=scene.group.map((m,i)=>{const hp=Math.max(4,(m.hp||8)+Math.floor((g.floor-1)*2));return {type:i===0&&type==='boss'?'boss':'enemy',name:m.name,role:m.role||'enemy',sceneKey:key,max:hp,hp,attack:g.floor+(m.role==='boss'?1:0),stun:false,def:m.def||10+Math.floor(g.floor/3),armed:true,looted:false,awareness:scene.awareness,obstacle:scene.terrain,blocked:scene.terrain!=='clear floor',move:m.move??scene.move??1,ranged:!!m.ranged,range:scene.distance,engagedInCombat:scene.awareness==='alert'};});e=g.enemies[0];
+  }else{
+   const hp=(type==='boss'?15:8)+g.floor*3;
+   e={...e,max:hp,hp,attack:g.floor,stun:false,def:10+Math.floor(g.floor/3),armed:true,looted:false,awareness:scene.awareness,obstacle:scene.terrain,blocked:scene.terrain!=='clear floor',move:scene.move,ranged:scene.ranged};g.enemies=[e];
+  }
+  if(key==='wounded'){
+    e.hp=Math.max(1,Math.ceil(e.max*.45));
+    e.injuredLeg=true;e.slow=true;e.slowStep=false;e.armed=false;e.weaponNearby=true;e.swordMoved=false;
+  }
+  g.range=scene.distance;
+ }
+ g.enemy=e;if(e&&type!=='trap'&&type!=='chest'&&type!=='shrine'&&type!=='merchant')g.range=e.range||scene.distance||g.range;show();
+ for(const line of scene.lines)await narrate(line);if(isGroupEncounter())await narrate(`You count ${aliveEnemies().length} active threats. Choose a target, or use an area ability if you have one.`,'cue');
+ await promptChoice(type==='enemy'||type==='boss'?'How do you respond?':'What would you like to do?',options());
+}
+async function gainXP(n){g.adventureXP+=n;cls().xp+=n;let msgs=[];while(g.adventureXP>=levelNeed(g.adventureLevel)){g.adventureXP-=levelNeed(g.adventureLevel);g.adventureLevel++;g.talentPoints++;if(g.adventureLevel%3===0)g.attributePoints++;const missing=Math.max(0,maxHP()-g.hp);g.hp=Math.min(maxHP(),g.hp+Math.ceil(missing/2)+2);g.stamina=maxStamina();if(g.cls==='mage')g.mana=Math.min(maxMana(),g.mana+3);msgs.push(`Adventurer level ${g.adventureLevel}! You earned a talent point and recovered some strength.${g.adventureLevel%3===0?' You also earned an attribute point.':''}`)}while(cls().xp>=levelNeed(cls().level)){cls().xp-=levelNeed(cls().level);cls().level++;cls().points++;g.hp+=3;msgs.push(`${CLASS[g.cls].name} level ${cls().level}! You gained a class skill point.`)}for(const m of msgs)await narrate(m,'reward');show();}
+async function defeat(){g.active=false;g.deaths++;g.best=Math.max(g.best,g.floor);const lost=Math.floor(g.gold*.25);g.gold-=lost;await narrate('Your strength fails. The darkness swallows the chamber.','hurt');await narrate(`You awaken at camp. Your XP, levels and equipment remain, but ${lost} gold is gone—lost somewhere in the dark during your escape.`,'hurt');g.atCamp=true;g.villageBossFight=false;g.enemy=null;g.enemies=[];g.groupEncounter=false;g.hp=maxHP();g.stamina=maxStamina();g.mana=maxMana();g.prepared=null;g.floor=1;g.room=0;g.active=true;g.switchedThisRoom=false;g.storyDeck=[];await promptChoice('You have another chance. What would you like to do?',campMenu());store()}
+async function singleEnemyTurn(){
+ const e=g.enemy;if(!e||e.hp<=0)return;
+ if(e.stun){e.stun=false;await narrate(`${e.name} stumbles, losing its chance to act.`);return}
+ if(e.awareness==='unaware'){e.awareness='suspicious';await narrate(`A faint sound reaches ${e.name}. It turns its head, uncertain where it came from.`);return}
+ if(e.awareness==='suspicious'){e.awareness='alert';e.engagedInCombat=true;await narrate(`${e.name} spots you, tightens its grip, and steps forward.`);return}
+ e.engagedInCombat=true;
+ if(e.weaponNearby&&!e.armed&&!e.swordMoved&&g.range!=='far'){
+  e.armed=true;e.weaponNearby=false;
+  await narrate(`${e.name} lunges for the dropped short sword and drags it into a defensive grip. The effort costs the mercenary the rest of the moment.`);
+  return;
+ }
+ if(g.hidden&&g.range!=='engaged'){
+  e.engagedInCombat=true;
+  if(e.ranged)await narrate(`${e.name} keeps its weapon trained on the place it last saw you, but does not have a clean target. The shot never comes.`);
+  else await narrate(`${e.name} searches the chamber instead of charging blindly, trying to pick you out from the shadows.`);
+  return;
+ }
+ if(g.range!=='engaged'&&!e.ranged){if(g.prepared==='mine'){g.prepared=null;const md=d(8)+Math.max(0,mod('INT'));e.hp=Math.max(0,e.hp-md);await narrate(`${e.name} steps into the Arcane Mine. It detonates for ${md} damage.`,'reward');if(e.hp===0){if(isGroupEncounter())await finishGroupEncounter();else await gainXP(combatXP(e));return}}if(g.prepared==='hold'){g.prepared=null;const hd=d(6)+Math.max(0,mod('STR'));e.hp=Math.max(0,e.hp-hd);await narrate(`You intercept ${e.name}'s advance for ${hd} damage and stop it short.`,'reward');if(e.hp===0){if(isGroupEncounter())await finishGroupEncounter();else await gainXP(combatXP(e));}return}if(g.prepared==='snare'){g.prepared=null;e.stun=true;const td=d(4)+Math.max(0,mod('DEX'));e.hp=Math.max(0,e.hp-td);await narrate(`${e.name} charges into your prepared snare, taking ${td} damage and losing its advance.`,'reward');if(e.hp===0){if(isGroupEncounter())await finishGroupEncounter();else{const exp=combatXP(e);await gainXP(exp);if(e.villageBoss)await villageBossDefeated();}}return}if(g.prepared==='brace'){g.prepared=null;const bd=d(6)+Math.max(0,mod('STR'));e.hp=Math.max(0,e.hp-bd);await narrate(`As ${e.name} commits to the approach, you meet the charge first for ${bd} damage and halt it.`,'reward');if(e.hp===0){if(isGroupEncounter())await finishGroupEncounter();else{const exp=combatXP(e);await gainXP(exp);if(e.villageBoss)await villageBossDefeated();}}return}
+  if(e.slow){
+   e.slowStep=!e.slowStep;
+   if(e.slowStep){await narrate(`${e.name} tries to follow, but the injured leg buckles and the gap remains.`);return;}
+  }
+  let steps=e.move;
+  if(e.blocked){steps=Math.max(0,steps-1);e.blocked=false;await narrate(`${e.name} must scramble around the ${e.obstacle}, slowing its advance.`)}
+  for(let i=0;i<steps&&g.range!=='engaged';i++)g.range=ZONES[Math.max(0,ZONES.indexOf(g.range)-1)];
+  if(g.range!=='engaged'){await narrate(`${e.name} draws closer, picking its way through the chamber, but cannot quite reach you yet.`);return}
+  await narrate(`${e.name} finally reaches you, raising its weapon as it catches its breath.`);return;
+ }
+ await narrate(e.armed===false?`${e.name} lashes out bare-handed.`:e.ranged&&g.range!=='engaged'?`${e.name} launches a shot from a distance.`:`${e.name} lashes out at you.`);
+ const attack=await beginRoll(20,'Enemy attack');const target=defend()+(g.cover&&g.range!=='engaged'?4:0);
+ const quality=attackGrade(attack,e.attack+(g.exposed?2:0),target,20);g.exposed=false;
+ if(quality.grade==='miss'){await narrate(`${e.name} misses. ${pick(MISSES)}`);if(Math.random()<.45){g.opening=true;await narrate(pick(OPENINGS),'reward')}return}
+ const amount=await beginRoll(e.type==='boss'?8:6,'Enemy damage');let raw=Math.max(1,amount+Math.floor(g.floor/3)-(e.armed===false?3:0));
+ let dmg=Math.max(1,Math.round(raw*damageScale(quality.grade)));if(quality.grade==='glancing')dmg=Math.min(dmg,Math.max(2,Math.ceil(raw*.5)));if(quality.grade==='strong')dmg=Math.max(dmg,4+Math.floor(g.floor/3));if(quality.grade==='exceptional')dmg=Math.max(dmg,6+Math.floor(g.floor/3));if(quality.grade==='critical')dmg=Math.max(dmg,8+Math.floor(g.floor/2));const coverProtected=g.cover&&e.ranged&&g.range!=='engaged';if(coverProtected)dmg=Math.max(1,Math.round(dmg*.7));g.hp=Math.max(0,g.hp-dmg);
+ const qtext=quality.grade==='glancing'?'The attack only catches you partially':quality.grade==='strong'?'The attack lands hard':quality.grade==='exceptional'?'The attack lands with crushing force':'The attack connects';
+ await narrate(`${qtext} for ${dmg} damage${coverProtected?' after your cover absorbs part of the shot':''}. You have ${g.hp}/${maxHP()} HP left.`,'hurt');
+ if(quality.grade==='glancing'&&Math.random()<.25){g.opening=true;await narrate('The awkward contact leaves your foe slightly out of position. An Opening appears.','reward')}
+ show();if(g.hp<=0)await defeat();
+}
+async function enemyTurn(){
+ if(!isGroupEncounter())return singleEnemyTurn();
+ const originalIndex=g.targetIndex;
+ for(const i of [...g.enemies.keys()]){const foe=g.enemies[i];if(!foe||foe.hp<=0)continue;g.enemy=foe;g.targetIndex=i;g.range=foe.range||g.range;await singleEnemyTurn();foe.range=g.range;if(g.hp<=0)return;}
+ g.targetIndex=originalIndex;syncTarget();show();
+}
+async function strike(kind){
+ const e=g.enemy;if(!e||e.hp<=0)return;
+ const targetLeg=kind.endsWith('_leg');kind=kind.replace('_leg','');
+ e.engagedInCombat=true;const special=kind==='special',skill=CLASS[g.cls].skills[0];
+ const ranged=kind==='ranged'||(special&&g.cls==='mage');
+ const wname=cls().equip[ranged?'ranged':'melee'],w=GEAR[wname],stat=g.cls==='mage'&&ranged?'INT':ranged?'DEX':'STR';
+ if(ranged&&g.range==='engaged'){
+  await narrate(g.cls==='mage'?`There is no room to bring ${wname} to bear while ${e.name} is on top of you. You need to create distance or fight with ${cls().equip.melee}.`:`At arm’s reach, ${wname} is too awkward to use effectively. Create distance or use ${cls().equip.melee}.`);
+  return;
+ }
+ if(special&&g.cls!=='mage'&&g.stamina<3){await narrate('You do not have enough Stamina for that technique.');return;}if(special&&g.cls==='mage'&&g.mana<4){await narrate('You do not have enough Mana for Arcane Burst.');return;}if(special&&g.cls==='rogue'&&g.range!=='engaged'){await narrate('Shadow Strike is a close-range finisher. Stay hidden and use Sneak Advance until you are within striking distance.');return;}if(special&&g.cls==='rogue'&&!(g.opening||g.hidden||e.awareness==='unaware')){await narrate('You do not have the angle for a Shadow Strike. Create an Opening, hide, or catch the enemy unaware first.');return;}
+ if(special&&g.cls==='warrior'&&g.range!=='engaged'){await narrate('Shield Bash only works once you are within arm’s reach.');return;}
+ if(special&&g.cls==='mage'&&!(g.cover||e.blocked||e.stun||e.awareness==='unaware'||g.opening||g.prepared==='arcane')){await narrate('You cannot safely gather enough power for Arcane Burst yet. Find cover, exploit an Opening, catch the foe unaware, or force it to negotiate an obstruction first.');return;}
+ if(!ranged&&g.range!=='engaged'){
+  await narrate(`You advance toward ${e.name}, weapon raised. You cannot strike in melee until you reach it.`);
+  g.range=ZONES[Math.max(0,ZONES.indexOf(g.range)-1)];e.awareness='alert';await narrate(`You close to ${g.range} distance.`);
+  await enemyTurn();return;
+ }
+ if(special){if(g.cls==='mage')g.mana-=4;else g.stamina-=3;}let bonus=mod(stat)+Math.floor((cls().level-1)/3)+((ranged&&g.cls==='rogue')?rank('Deadeye'):0)+(g.cls==='mage'&&ranged?rank('Focused Spell'):0),extra=0;
+ if(targetLeg){bonus-=2;if(e.injuredLeg)extra+=3;}
+ const unaware=e.awareness==='unaware',hadOpening=g.opening,hadHidden=g.hidden;
+ if(unaware||hadHidden)bonus+=2;
+ if(special&&g.cls==='rogue'){bonus-=2;extra=3+rank('Shadow Strike')*2;if(hadOpening){bonus+=4;extra+=3}if(hadHidden||unaware){bonus+=5;extra+=5}}
+ if(special&&g.cls==='warrior'){extra+=rank('Shield Bash');if(hadOpening)extra+=2;}
+ if(special&&g.cls==='mage'){extra+=4+rank('Arcane Burst')*2;if(g.prepared==='arcane'){bonus+=3;extra+=5;g.prepared=null;}}
+ await narrate(targetLeg?`You deliberately target ${e.name}'s injured leg with ${wname}. It is a harder shot, but a clean hit could worsen the injury.`:special?g.cls==='rogue'?`You dart forward with ${wname}, aiming a precise Shadow Strike${hadOpening?' through the exposed opening':''}.`:g.cls==='warrior'?`You slam your shield toward the enemy, sacrificing power to knock it off balance.`:`Arcane energy races through your ${wname} as you release an Arcane Burst.`:`You attack with ${wname}${ranged?' from '+g.range+' distance':' at close quarters'}.`);
+ const rolled=await beginRoll(20,'Your attack');
+ let critical=rolled>=(w.crit||20),mishap=rolled<=(w.fail||1);
+ if(wname==='Shortbow'&&g.cover&&g.range!=='engaged'&&rolled>=19)critical=true;
+ // Anti-frustration floor: after two poor attacks, a basic attack gets a quiet quality boost.
+ let qualityBonus=0;if(!special&&(g.poorAttackStreak||0)>=2)qualityBonus=4;
+ let quality=attackGrade(rolled,bonus+qualityBonus,e.def,critical?(w.crit||20):99);
+ if(critical)quality.grade='critical';
+ // Specials convert setup into reliability instead of simply adding another chance to whiff.
+ if(special&&g.cls==='rogue'&&quality.grade==='glancing')quality.grade='normal';
+ if(special&&g.cls==='mage'&&quality.grade==='glancing')quality.grade='normal';
+ g.opening=false;g.openingReason='';g.hidden=false;e.awareness='alert';
+ if(quality.grade==='miss'){
+  g.poorAttackStreak=(g.poorAttackStreak||0)+1;
+  await narrate(pick(['For once, the attack misses completely.','Your timing breaks at the last instant and the attack goes wide.','The target slips completely clear of the blow.']));
+  if(mishap){g.exposed=true;await narrate(`${pick(CRIT_MISHAPS)} You are Exposed to the next attack.`,'hurt')}
+  if(special&&g.cls==='rogue'){g.exposed=true;await narrate('The failed Shadow Strike leaves you Exposed: the enemy gains +2 to its next attack.','hurt')}
+  await enemyTurn();return;
+ }
+ if(quality.grade==='glancing')g.poorAttackStreak=(g.poorAttackStreak||0)+1;else g.poorAttackStreak=0;
+ const sides=special&&g.cls==='warrior'?4:w.die;
+ const base=await beginRoll(sides,special&&g.cls==='warrior'?'Shield Bash damage':`${wname} damage`);
+ const critExtra=quality.grade==='critical'?await beginRoll(sides,'Critical bonus damage'):0;
+ let raw=Math.max(1,base+Math.max(0,mod(stat))+extra+g.weaponBonus+critExtra);
+ let damage=Math.max(1,Math.round(raw*damageScale(quality.grade)));const flat=Math.max(0,mod(stat))+extra+g.weaponBonus;if(quality.grade==='glancing'){const glanceCap=Math.max(2,Math.ceil((sides+flat)*.5));damage=Math.min(damage,glanceCap);}if(quality.grade==='strong')damage=Math.max(damage,Math.ceil(sides*.75)+flat);if(quality.grade==='exceptional')damage=Math.max(damage,sides+Math.ceil(sides*.35)+flat);if(quality.grade==='critical'){const critFloor=sides*2+flat;damage=Math.max(damage,critFloor);}
+ e.hp=Math.max(0,e.hp-damage);
+ const magical=g.cls==='mage'&&ranged;const lead=quality.grade==='glancing'?pick(magical?MAGIC_GLANCES:GLANCES):quality.grade==='strong'||quality.grade==='exceptional'?pick(magical?MAGIC_STRONG:STRONG_HITS):pick(magical?MAGIC_HITS:HITS);
+ const label=quality.grade==='critical'?' — CRITICAL HIT!':quality.grade==='exceptional'?' — EXCEPTIONAL HIT!':quality.grade==='strong'?' — STRONG HIT!':quality.grade==='glancing'?' — GLANCING HIT':'';
+ await narrate(`${lead} ${damage} damage${label}. ${e.name} has ${e.hp} HP remaining.`,'reward');
+ // Unwieldy/volatile weapons can still create complications on a low roll without turning the whole turn into a miss.
+ if(mishap&&rolled!==1&&e.hp>0){g.exposed=true;await narrate(`${pick(CRIT_MISHAPS)} The attack still connects, but you are Exposed to the next attack.`,'hurt')}
+ if(targetLeg&&e.hp>0){e.slow=true;e.slowStep=false;await narrate(e.injuredLeg?'The blow lands directly on the existing wound. The mercenary cries out and can no longer keep pace with you.':'The targeted hit hampers the creature’s movement.','reward');}
+ if((quality.grade==='critical'||quality.grade==='exceptional')&&e.hp>0&&w.effect==='heavy'){e.stun=true;await narrate('The heavy impact bowls the enemy off balance!','reward')}
+ if((quality.grade==='critical'||quality.grade==='exceptional')&&e.hp>0&&w.effect==='precision'){g.opening=true;await narrate('The precise hit opens the creature’s guard for a follow-up.','reward')}
+ if((quality.grade==='critical'||quality.grade==='exceptional')&&e.hp>0&&w.effect==='volatile'){e.stun=true;await narrate('Wild magic crackles around your foe, leaving it momentarily dazed.','reward')}
+ show();if(e.hp===0){await narrate(`${e.name} collapses.`,'reward');if(isGroupEncounter()){const cleared=await finishGroupEncounter();syncTarget();if(!cleared&&aliveEnemies().length)await enemyTurn();return}const exp=combatXP(e);await narrate(`You earn ${exp} XP for overcoming the fight.`,'reward');await gainXP(exp);if(e.villageBoss)await villageBossDefeated();return}
+ if(special&&g.cls==='warrior'){
+  if(d(100)<=Math.min(85,40+rank('Shield Bash')*10+(hadOpening?25:0))){e.stun=true;await narrate('Your shield bash knocks the foe senseless for a moment! It loses its next turn.','reward')}
+  else await narrate('The shield lands, but your opponent holds its footing.');
+ }
+ if(!special)g.stamina=Math.min(maxStamina(),g.stamina+1);await enemyTurn();
+}
+function quest(id){return g.village?.quests?.[id]}
+function questObjective(id){const q=quest(id);if(!q)return '';if(q.status==='completed')return 'Completed.';if(id==='empty_house')return q.stage>=2?'You have read Elias Venn’s journal. The truth beneath the house remains.':q.stage>=1?'A concealed cellar entrance has been found. Search beneath the Venn house.':'Find a way into the shuttered Venn house and learn who has been using it.';if(id==='midnight_bell')return q.stage>=2?'The source lies beneath the Venn house. Confront it when you are ready.':q.stage>=1?'You heard the impossible bell. Ask Sister Elian what she knows now.':'Be in Gloamwick after midnight and witness the bell for yourself.';if(id==='silver_clapper')return q.stage>=1?'Take the repaired silver clapper to Sister Elian at the chapel.':'Ask Tessa why she repaired the marked silver clapper—and whether you can take it.';return q.summary||''}
+async function activateQuest(id,announce=true){g.village.quests=g.village.quests||{};if(g.village.quests[id])return false;g.village.quests[id]={status:'active',stage:0};if(announce)await narrate(`Quest begun — ${QUESTS[id].title}: ${questObjective(id)}`,'reward');return true}
+async function completeQuest(id,xp=40){const q=quest(id);if(!q||q.status==='completed')return false;q.status='completed';await narrate(`Quest complete — ${QUESTS[id].title}.`,'reward');if(xp){await narrate(`Quest reward — ${xp} XP.`,'reward');await gainXP(xp)}return true}
+async function syncQuests(announce=true){if(!g?.village)return;g.village.quests=g.village.quests||{};if(hasClue('ledger_guest')||hasClue('parcel_house'))await activateQuest('empty_house',announce);if(hasClue('card_whisper')||hasClue('rope_cut'))await activateQuest('midnight_bell',announce);if(hasClue('clapper_repair'))await activateQuest('silver_clapper',announce);const eh=quest('empty_house');if(eh&&eh.status!=='completed'&&hasClue('cellar_seam'))eh.stage=Math.max(eh.stage,1);const mb=quest('midnight_bell');if(mb&&mb.status!=='completed'&&g.village.flags.midnightHeard)mb.stage=Math.max(mb.stage,1)}
+async function startVillageBoss(){g.inVillage=false;g.atCamp=false;g.villageBossFight=true;g.opening=g.hidden=g.exposed=g.cover=false;const knownName=!!g.village.flags.trueNameKnown,ward=!!g.village.flags.bellWard,understood=quest('midnight_bell')?.stage>=2;let hp=34-(knownName?5:0)-(ward?4:0),def=12-(understood?1:0);g.enemy={type:'boss',name:'The Hollow Bellkeeper',sceneKey:'village_boss',villageBoss:true,done:false,engagedInCombat:true,max:hp,hp,attack:ward?1:2,stun:false,def,armed:true,looted:false,awareness:'alert',obstacle:'stone bell supports',blocked:true,move:1,ranged:true};g.range='far';show();await narrate('The iron-bound door opens into a circular chamber beneath Gloamwick. A cracked bronze bell hangs where no tower should be, suspended over a black pool.');await narrate('A gaunt figure in the rotted coat of a bell keeper turns beneath it. Silver wire has grown through his hands and into the bell rope. When he speaks, the bell answers with the same voice.');if(knownName){g.opening=true;await narrate('Elias Venn. The name from the journal gives shape to the thing before you. For a heartbeat, the Bellkeeper recoils as though remembering itself.','reward')}if(ward){g.cover=true;await narrate('Sister Elian’s warded clapper warms at your side. The bell’s first pulse breaks around you instead of through you.','reward')}if(understood)await narrate('You know now that the ringing is not a summons—it is the creature’s anchor. Damaging the Bellkeeper while the bell is silent should be easier.','reward');await promptChoice('The Hollow Bellkeeper moves toward you. What will you do?',options())}
+async function villageBossDefeated(){if(!g.enemy?.villageBoss||g.village.flags.bossDefeated)return;g.village.flags.bossDefeated=true;await narrate('The silver wires snap one after another. Above you, somewhere in Gloamwick, the silent tower gives one final trembling note—and then nothing.','reward');await completeQuest('midnight_bell',100)}
+function hasClue(id){return !!g.village?.clues?.[id]}
+function clueText(id){if(id==='clapper_repair'&&!hasClue('fountain_mark'))return 'Tessa repaired a silver bell clapper recently. It bears an unfamiliar crescent-and-bell mark.';if(id==='parcel_house'&&!hasClue('ledger_guest'))return 'Merrow’s parcels include lamp oil and dried food addressed only to “E.V.” at the shuttered house.';if(id==='ledger_guest'&&!hasClue('parcel_house'))return 'The inn ledger shows “Elias Venn” renting room six several months ago. There is no departure date.';return CLUES[id]?.text||''}async function addClue(id){if(!CLUES[id])return false;if(hasClue(id)){await narrate(`Clue updated — ${CLUES[id].title}: ${clueText(id)}`,'reward');return false}g.village.clues[id]=true;await narrate(`Clue recorded — ${CLUES[id].title}: ${clueText(id)}`,'reward');for(const other of Object.keys(g.village.clues)){if(other!==id&&g.village.clues[other]){const txt=clueText(other);if(txt!==CLUES[other].text||other==='clapper_repair'||other==='ledger_guest'||other==='parcel_house')await narrate(`Your notes on “${CLUES[other].title}” now make more sense in light of what you just learned.`)}}await syncQuests(true);return true}
+function villageKnownCount(){return Object.values(g.village?.clues||{}).filter(Boolean).length}
+async function enterVillage(loc='square'){
+ g.atCamp=false;g.inVillage=true;g.enemy=null;g.village.location=loc;g.opening=g.hidden=g.exposed=g.cover=false;
+ await syncQuests(false);const place=VILLAGE[loc];const seen=!!g.village.visited[loc];g.village.visited[loc]=(g.village.visited[loc]||0)+1;show();
+ const lines=seen?place.return:place.intro;for(const line of lines)await narrate(line);
+ // Cross-location reactions make accumulated clues matter without forcing a quest yet.
+ if(loc==='house'&&hasClue('parcel_house')&&!g.village.flags.houseParcelReaction){g.village.flags.houseParcelReaction=true;await narrate('Knowing that supplies have been delivered here changes the silence of the house. Someone has been using it, however abandoned it appears.');}
+ if(loc==='chapel'&&hasClue('clapper_repair')&&!g.village.flags.clapperReaction){g.village.flags.clapperReaction=true;await narrate('The repaired silver clapper you saw at the smithy makes the chapel’s missing bell rope feel considerably less accidental.');}
+ if(loc==='smith'&&hasClue('fountain_mark')&&!g.village.flags.markReaction){g.village.flags.markReaction=true;await narrate('The crescent-and-bell mark beneath the fountain is fresh in your mind as your eyes return to the wrapped silver object.');}
+ if((g.village.timeIndex||0)===4&&loc==='square'&&hasClue('card_whisper')&&!g.village.flags.midnightHeard){g.village.flags.midnightHeard=true;await narrate('From the silent tower comes one low bell stroke. No one emerges to investigate.','reward');await syncQuests(true)}if(loc==='square'&&g.village.flags.bossDefeated&&!g.village.flags.bossVillageReaction){g.village.flags.bossVillageReaction=true;await narrate('Gloamwick is still quiet, but it is no longer listening upward. For the first time, windows stand open around the square.','reward')}await promptChoice('Where would you like to look next?',villageMenu(loc));
+}
+async function villageCheck(label,dc,onSuccess,onFail='You spend several minutes looking, but nothing more resolves into certainty yet.',key=label){const stamp=`${key}:${g.village.timeIndex||0}:${villageKnownCount()}`;if(g.village.attempts[key]===stamp){await narrate('You have already pushed this line of investigation as far as the current circumstances allow. A new clue, improved skill, or different time of day may give you another angle.');return false}g.village.attempts[key]=stamp;
+ const roll=await beginRoll(20,label);const total=roll+observeBonus();
+ if(roll===20||total>=dc){await onSuccess(roll,total);return true}
+ await narrate(onFail);return false;
+}
+async function villageInvestigate(subject){
+ const loc=g.village.location;
+ if(subject==='fountain')return villageCheck('Examine the fountain',11,async()=>{await narrate('Kneeling beside the dry basin, you find shallow tool marks beneath the rim where no passerby would normally see them.');await addClue('fountain_mark')});
+ if(subject==='square')return villageCheck('Observe the square',12,async()=>{await narrate('You stop watching faces and start watching what draws their attention. More than once, a villager glances toward the bell tower when the wind shifts.');await addClue('square_silence')});
+ if(subject==='ledger')return villageCheck('Examine the guest ledger',12,async()=>{await narrate('The ledger is ordinary until one entry refuses to fit Mara’s story. Room six was rented to Elias Venn months ago, and nobody ever recorded his departure.');await addClue('ledger_guest')});
+ if(subject==='cards')return villageCheck('Listen to the card players',13,async()=>{await narrate('You let their conversation drift around you until one player mutters about “the single stroke” after midnight. Another immediately tells him to shut up.');await addClue('card_whisper')});
+ if(subject==='parcels')return villageCheck('Examine the parcels',12,async()=>{await narrate('Most parcels bear ordinary names. Two bundles of lamp oil and dried food are addressed only to “E.V.” at the shuttered house on the eastern edge of town.');await addClue('parcel_house')});
+ if(subject==='clapper'){
+  const dc=hasClue('fountain_mark')?10:13;
+  return villageCheck('Examine the wrapped silver object',dc,async()=>{await narrate(hasClue('fountain_mark')?'The cloth slips aside just enough to reveal a polished silver bell clapper—and the same crescent-and-bell mark you found beneath the fountain.':'Tessa finally lets you see the object: a recently repaired silver bell clapper engraved with a strange crescent pierced by a tiny bell.');await addClue('clapper_repair')});
+ }
+ if(subject==='rope')return villageCheck('Examine the bell rope',11,async()=>{await narrate('The fibers are not frayed. The rope was cut cleanly with a sharp blade from inside the chapel, low enough for a person standing on the floor to reach.');await addClue('rope_cut')});
+ if(subject==='records'){
+  const dc=(hasClue('ledger_guest')||hasClue('parcel_house'))?11:14;
+  return villageCheck('Study the chapel records',dc,async()=>{await narrate('A surname catches your eye: Venn. Elias Venn served as keeper of the bell tower. An older notation mentions his family maintaining a sealed “lower room” beneath their house.');await addClue('old_record')});
+ }
+ if(subject==='frontdoor')return villageCheck('Examine the front entrance',12,async()=>{await narrate('The chain is genuinely old and undisturbed. If anyone has entered recently, they did not use the front door.');g.village.flags.frontDoorChecked=true});
+ if(subject==='housegrounds'){
+  const dc=hasClue('parcel_house')?10:12;
+  return villageCheck('Search around the house',dc,async()=>{await narrate('Fresh boot prints interrupt the weeds along the rear wall. They end abruptly beside a patch of nettles at the foundation.');await addClue('house_tracks');if(hasClue('old_record')||hasClue('parcel_house')){await narrate('With the tracks and the other clues in mind, you push the nettles aside and notice a rectangular seam in the foundation stones.');await addClue('cellar_seam')}});
+ }
+ if(subject==='shutter')return villageCheck('Study the crooked shutter',13,async()=>{await narrate('The shutter is not merely loose. Repeated scratches around the latch show it has been opened to the same narrow angle many times—more like a signal than neglect.');await addClue('shutter_signal')});
+ await narrate('You find nothing else here that seems actionable yet.');
+}
+async function villageTalk(who){
+ if(who==='innkeeper'){
+  if(hasClue('ledger_guest')){await narrate('When you ask Mara about Elias Venn by name, her polishing stops. “He kept the bell,” she says at last. “Then one winter he stopped coming down from the hill. That is all I know.”');}
+  else await narrate('Mara smiles politely but keeps her answers narrow. “Rooms are cheap. Supper is warm. People here value quiet.” Her eyes flick once toward the ledger.');
+  return;
+ }
+ if(who==='merrow'){
+  if(hasClue('parcel_house'))await narrate('Merrow frowns at the parcels. “Paid coin is paid coin. They’re collected after dusk. I never asked by whom.”');
+  else await narrate('Merrow shrugs. “Gloamwick has survived by minding its business. The tower is closed, the chapel is safe, and empty houses are best left empty.”');
+  return;
+ }
+ if(who==='corren'){await narrate('Corren recommends bitterroot for cuts and sleepweed for nerves, then adds quietly, “If you hear a bell after midnight, stay indoors.” He refuses to explain.');if(!hasClue('card_whisper'))await addClue('card_whisper');return;}
+ if(who==='elian'){
+  if(hasClue('rope_cut'))await narrate('Sister Elian studies the severed rope. “Yes,” she admits, “we cut it ourselves. The bell was ringing when no one pulled it.”');
+  else await narrate('Sister Elian says the tower has been unsafe for years. Her answer is gentle, practiced, and conspicuously avoids explaining why the bell rope ends above your head.');
+  return;
+ }
+}
+async function resolve(cmd){if(!g.active)return;let e=syncTarget()||g.enemy;if(cmd?.startsWith('target:')){const i=Number(cmd.split(':')[1]);if(isGroupEncounter()&&g.enemies[i]?.hp>0){g.targetIndex=i;g.enemy=g.enemies[i];g.range=g.enemy.range||g.range;await narrate(`You shift your attention to ${g.enemy.name}.`);show()}return}if(cmd==='sheet'){tab='stats';renderSheet();document.querySelector('#sheetTabs').scrollIntoView({behavior:'smooth',block:'nearest'});return}if(cmd==='sheet_clues'){tab='clues';renderSheet();document.querySelector('#sheetTabs').scrollIntoView({behavior:'smooth',block:'nearest'});return}if(cmd==='sheet_quests'){tab='quests';renderSheet();document.querySelector('#sheetTabs').scrollIntoView({behavior:'smooth',block:'nearest'});return}if(cmd==='switch'){switchModal();return}if(cmd==='village'){await enterVillage('square');return}if(cmd?.startsWith('village:go:')){await enterVillage(cmd.split(':')[2]);return}if(cmd==='village:quest:tessa_clapper'){g.village.flags.hasClapper=true;quest('silver_clapper').stage=1;await narrate('Tessa unwraps the silver clapper but does not hand it over immediately. “Bring it to Elian. If she tells you to throw it in the river, do it.” She finally places the cold silver in your hand.','reward');return}if(cmd==='village:quest:elian_clapper'){g.village.flags.hasClapper=false;g.village.flags.bellWard=true;await narrate('Sister Elian fits the clapper into a small loop of white cord and whispers an old blessing over it. “This was never meant to ring the bell,” she says. “It was meant to keep something from answering.”','reward');await completeQuest('silver_clapper',40);return}if(cmd==='village:quest:elian_midnight'){quest('midnight_bell').stage=2;await narrate('Elian closes the chapel doors before answering. “Then it has begun again. Elias Venn believed the bell beneath his family house could hold grief in place. It held him instead.” She points you toward the Venn cellar and begs you not to answer if the bell speaks your name.','reward');if(!hasClue('old_record'))await addClue('old_record');return}if(cmd==='village:quest:journal'){if(g.village.flags.journalRead){await narrate('You have already read the useful portions of Elias Venn’s journal.');return}g.village.flags.journalRead=true;g.village.flags.trueNameKnown=true;const q=quest('empty_house');if(q)q.stage=2;await narrate('Elias Venn’s journal begins as maintenance notes and ends as confession. He built a second bell beneath the house after losing his daughter, convinced its tone could keep the dead from becoming distant memories. The final pages repeat one warning: “If I forget my own name, speak it before the bell speaks yours.”','reward');await completeQuest('empty_house',60);return}if(cmd==='village:quest:bossdoor'){await narrate(g.village.flags.bossDefeated?'Beyond the inner door, the underground bell chamber is finally silent.':'Cold air moves beneath the iron door. From the other side comes the faint tension of a rope being pulled very slowly.');if(!g.village.flags.bossDefeated)await promptChoice('Do you want to enter the bell chamber?',[['Open the door and confront what is below','village:quest:startboss'],['Not yet','village:go:cellar']]);return}if(cmd==='village:quest:startboss'){await startVillageBoss();return}if(cmd==='village_boss_return'){g.villageBossFight=false;g.enemy=null;await enterVillage('cellar');return}if(cmd==='village:leave'){g.inVillage=false;g.atCamp=true;g.village.location='square';await narrate(`You leave ${VILLAGE_NAME} behind and follow the old road back toward the dungeon camp.`);await promptChoice('At camp once more, what would you like to do?',campMenu());return}if(cmd?.startsWith('village:investigate:')){await villageInvestigate(cmd.split(':')[2]);return}if(cmd?.startsWith('village:talk:')){await villageTalk(cmd.split(':')[2]);return}if(cmd==='village:buy:mana'){if(g.gold<12){await narrate('Merrow taps the counter. “Twelve gold for the blue vial.” You do not have enough.');return}g.gold-=12;g.manaPotions=(g.manaPotions||0)+1;await narrate('Merrow trades you a blue-glass mana draught for twelve gold.','reward');return}if(cmd==='village:buy:stamina'){if(g.gold<10){await narrate('Merrow taps a green bottle. “Ten gold for the endurance tonic.” You do not have enough.');return}g.gold-=10;g.staminaPotions=(g.staminaPotions||0)+1;await narrate('Merrow trades you a sharp herbal endurance tonic for ten gold.','reward');return}if(cmd==='village:buy:potion'){if(g.gold<10){await narrate('Merrow taps the counter. “Ten gold.” You do not have enough.');return}g.gold-=10;g.potions++;await narrate('Merrow trades you a corked healing draught for ten gold.','reward');return}if(cmd==='village:smith:upgrade'){const cost=18+g.weaponBonus*10;if(g.gold<cost){await narrate(`Tessa names a price of ${cost} gold for the work. You cannot cover it yet.`);return}g.gold-=cost;g.weaponBonus++;await narrate(`Tessa spends an hour balancing edges, grips, and fittings. Your permanent weapon improvement is now +${g.weaponBonus} damage.`,'reward');return}if(cmd==='enter'){g.inVillage=false;await chamber();return}if(cmd==='restart'){g.atCamp=true;g.floor=1;g.room=0;g.active=true;g.hp=maxHP();g.storyDeck=[];await promptChoice('You stand at camp. What would you like to do?',campMenu());return}if(cmd==='return_camp'){g.inVillage=false;g.villageBossFight=false;g.atCamp=true;g.enemy=null;g.enemies=[];g.groupEncounter=false;g.stamina=maxStamina();g.mana=maxMana();g.prepared=null;g.floor=1;g.room=0;g.storyDeck=[];g.range='far';g.cover=false;g.hidden=false;g.opening=false;await narrate('You decide not to press your luck. The return path takes time, but eventually the dungeon gates give way to the familiar firelight of camp.');await promptChoice('Back at camp, where would you like to go?',campMenu());return}
+if(cmd==='village:skill:thievery'){const r=await beginRoll(20,'Thievery');if(r===20||r+mod('DEX')>=13){g.gold+=8;await narrate('You notice a payment pouch left beside the delivery ledger and palm eight gold without drawing Merrow’s eye. The opportunity is gone now.','reward');g.village.flags.thieveryStore=true}else await narrate('Merrow’s gaze snaps toward your hand before you commit. You abandon the attempt without taking anything.');return}if(cmd==='village:skill:intimidation'){const r=await beginRoll(20,'Intimidation');if(r===20||r+mod('CHA')+2>=12){await narrate('Your tone makes it clear that vague warnings will not satisfy you. The conversation suddenly becomes much more specific.','reward');if(g.village.location==='store')await addClue('parcel_house');else await addClue('card_whisper')}else await narrate('The locals close ranks instead of opening up. Pushing harder now would only make them less cooperative.');return}if(cmd==='village:skill:medicine'){if(g.stamina<2){await narrate('You are too drained to do careful field treatment right now.');return}g.stamina-=2;await narrate('You help Corren clean and wrap a forge burn using the supplies at hand. In return, he gives you a small restorative draught.','reward');g.potions++;g.village.flags.medicineHelp=true;return}
+if(cmd==='village:wait'){g.village.timeIndex=((g.village.timeIndex||0)+1)%5;await narrate(`Time passes. ${['Morning settles over Gloamwick.','Daylight fills the square.','Evening shadows stretch across the roofs.','Night closes over the village.','It is now after midnight. The village has gone almost completely still.'][g.village.timeIndex]}`);if(g.village.timeIndex===4&&hasClue('card_whisper')){g.village.flags.midnightHeard=true;await narrate('A single impossible bell note rolls across Gloamwick.','reward');await syncQuests(true)}return}if(cmd==='village:midnight'){g.village.timeIndex=4;await narrate('You wait until after midnight. Most windows are dark, and every small sound seems to carry farther than it should.');if(hasClue('card_whisper')){await narrate('Somewhere above the rooftops, a single bell note trembles through the night.','reward');g.village.flags.midnightHeard=true;await syncQuests(true)}return}if(cmd==='lootgroup'){await groupLoot();return}
+if(cmd==='talent_sweep'){const targets=aliveEnemies().filter(x=>(x.range||g.range)==='engaged');await aoeDamage('Sweeping Strike','stamina',4,targets,6,Math.max(0,mod('STR')));return}
+if(cmd==='talent_hold'){if(g.stamina<3){await narrate('You need 3 Stamina to Hold the Line.');return}g.stamina-=3;g.prepared='hold';await narrate('You settle into a guarded stance, ready to punish the next enemy that rushes you.','reward');await enemyTurn();return}
+if(cmd==='talent_smoke'){if(g.stamina<3){await narrate('You need 3 Stamina for a Smoke Bomb.');return}g.stamina-=3;g.hidden=true;g.cover=true;for(const foe of aliveEnemies())foe.awareness='suspicious';await narrate('The smoke bomb bursts across the battlefield. Sight lines vanish and you disappear into the confusion. You are Hidden again.','reward');return}
+if(cmd==='talent_ricochet'){const ts=aliveEnemies().slice(0,2);await aoeDamage('Ricochet','stamina',4,ts,6,Math.max(0,mod('DEX')));return}
+if(cmd==='talent_chain'){const target=syncTarget(),ts=[target,...aliveEnemies().filter(x=>x!==target)].filter(Boolean).slice(0,3);if(g.mana<5){await narrate('You need 5 Mana for Chain Lightning.');return}g.mana-=5;await narrate('Lightning tears from your wand and leaps from one foe to the next.');for(let i=0;i<ts.length;i++){const amount=await beginRoll(8,'Chain Lightning damage');const dmg=Math.max(1,amount+Math.max(0,mod('INT'))+2-i*2);ts[i].hp=Math.max(0,ts[i].hp-dmg);await narrate(`${ts[i].name} takes ${dmg} lightning damage${ts[i].hp?'':' and falls'}.`,'reward')}await finishGroupEncounter();syncTarget();show();if(aliveEnemies().length)await enemyTurn();return}
+if(cmd==='talent_frost'){const ts=aliveEnemies().filter(x=>['near','engaged'].includes(x.range||g.range));await aoeDamage('Frost Nova','mana',5,ts,6,Math.max(0,mod('INT')),x=>{x.slow=true;x.slowStep=false});return}
+if(cmd==='talent_mine'){if(g.mana<4){await narrate('You need 4 Mana for Arcane Mine.');return}g.mana-=4;g.prepared='mine';await narrate('You seed the floor with a nearly invisible arcane charge. The next enemy to push forward may trigger it.','reward');await enemyTurn();return}
+if(cmd==='talent_arcane'){if(g.mana<3){await narrate('You need 3 Mana to begin an Arcane Charge.');return}g.mana-=3;g.prepared='arcane';await narrate('You plant your feet and draw power into the wand. Arcane light gathers without yet being released. Your next spell can hit much harder if you keep the advantage.','reward');await enemyTurn();return}if(cmd==='talent_snare'){if(g.stamina<3){await narrate('You need 3 Stamina to prepare a snare.');return}g.stamina-=3;g.prepared='snare';await narrate('Working quickly, you rig a crude snare across the enemy’s likely approach. If it charges through that space, the trap may stop it.','reward');await enemyTurn();return}if(cmd==='talent_brace'){if(g.stamina<3){await narrate('You need 3 Stamina to Brace.');return}g.stamina-=3;g.prepared='brace';await narrate('You lower your center of gravity and set your weapon, waiting for the enemy to commit to the approach.','reward');await enemyTurn();return}if(cmd==='talent_explosive'){if(g.stamina<5){await narrate('You need 5 Stamina for Explosive Shot.');return}if(g.range==='engaged'){await narrate('There is no safe room to loose an explosive shot while enemies are on top of you.');return}g.stamina-=5;const target=syncTarget();await narrate(`You loose an explosive arrow toward ${target.name}.`);const r=await beginRoll(20,'Explosive Shot');if(r===1){await narrate('The arrow skips away and detonates harmlessly against stone.');await enemyTurn();return}const primary=(await beginRoll(8,'Explosive impact'))+(await beginRoll(6,'Blast damage'))+Math.max(0,mod('DEX'));target.hp=Math.max(0,target.hp-primary);await narrate(`${target.name} takes ${primary} damage from the center of the blast.`,'reward');for(const other of aliveEnemies().filter(x=>x!==target)){const splash=Math.max(2,Math.floor(primary*.45));other.hp=Math.max(0,other.hp-splash);await narrate(`${other.name} is caught in the blast for ${splash} damage${other.hp?'':' and falls'}.`,'reward')}await finishGroupEncounter();syncTarget();show();if(aliveEnemies().length)await enemyTurn();return}if(cmd==='talent_restoration'){if(!hasTalent('Restoration')||g.mana<4){await narrate('You cannot call on Restoration right now.');return}g.mana-=4;const heal=6+d(6)+Math.max(0,mod('INT'));g.hp=Math.min(maxHP(),g.hp+heal);await narrate(`Restorative light closes your wounds for ${heal} HP.`,'reward');if(e?.hp>0)await enemyTurn();return}
+if(cmd==='break_stalemate'){if(!e?.hp)return;if(g.cls==='mage'){if(g.mana<2){await narrate('You need 2 Mana for a blinding flash.');return}g.mana-=2;await narrate('You snap a burst of white arcane light into your opponent’s eyes and move while it recoils.');}else{if(g.stamina<2){await narrate('You need 2 Stamina for that maneuver.');return}g.stamina-=2;await narrate(g.cls==='rogue'?'You fling grit into your opponent’s face and slip away while it flinches.':'You sell a hard shoulder feint, then disengage before the counterstroke can land.');}if(g.range!=='far')g.range=ZONES[Math.min(2,ZONES.indexOf(g.range)+1)];g.opening=true;g.cover=g.cover||g.cls==='rogue';e.stun=true;g.missStreak=0;await narrate(`The rhythm of the fight changes. You have created distance at ${g.range} range and an Opening for your next move.`,'reward');return}
+if(cmd==='inspect_room'){await inspectRoom();return}
+if(cmd.startsWith('object:')){await useRoomObject(cmd);return}
+if(cmd.startsWith('scene_')&&e?.hp>0){
+ const key=e.sceneKey,action=cmd.slice(6);if(action==='restore'&&key==='wounded'){if(g.mana<4){await narrate('You do not have enough Mana.');return}g.mana-=4;await peacefulExit('You keep your distance and send a controlled thread of restorative magic into the mercenary’s torn leg. The bleeding slows; disbelief replaces fear. In gratitude, the mercenary gives you the folded map from the satchel and warns you about the floor below.',8);return}const difficulty=10+Math.floor(g.floor/2);
+ if(action==='observe'){
+  if(e.observed){await narrate('You have watched long enough to learn the creature’s pattern.');return;}e.observed=true;
+  await narrate(key==='watch'?'Between patrols, the skeleton stops beside the empty chair, exposing its back for several heartbeats.':key==='bridge'?'Several planks of the bridge have come loose. The bandit keeps its weight away from the weak side.':key==='alchemy'?'One ventilation valve still turns, and the unstable bottle rack hangs directly above the crawler’s feeding path.':key==='tollkeeper'?'The keeper never looks toward the maintenance path behind the booth; the hanging chains conceal its entrance whenever they sway.':key==='flooded'?'The creature reacts to ripples more than sight. The raised ledge could let you move without disturbing the water.':key==='archer'?'The archer fires in a measured rhythm, briefly losing sight of the near columns while reaching for the next arrow.':key==='chained'?'The hound’s chain reaches the obvious path but falls short of the locked side gate by several feet.':key==='argument'?'The goblins are so focused on proving each other wrong that both repeatedly turn their backs on the corridor.':key==='sentinel'?'Each faceless statue holds a shield marked with a different family crest. The sentinel appears to avoid striking them.':'Watching quietly, you discover a gap in your opponent’s routine.');
+  g.opening=true;if(g.cls==='rogue')g.hidden=true;const reason={watch:'the skeleton pauses with its back exposed at the empty chair',bridge:'the bandit shifts away from the weak planks when changing footing',alchemy:'the crawler passes directly beneath the unstable bottle rack',tollkeeper:'the maintenance path disappears from the keeper’s sight when the chains sway',flooded:'the stalker tracks ripples rather than motion on the raised ledge',archer:'the archer loses sight of the near columns while reaching for the next arrow',chained:'the hound’s chain cannot reach the locked side gate',argument:'the arguing goblins repeatedly turn their backs on the corridor',sentinel:'the sentinel hesitates near the memorial shields'}[key]||'you identify a repeatable weakness in the enemy’s routine';g.openingReason=reason;await narrate(`Opening discovered: ${reason}. Actions that exploit an Opening gain their setup benefit, but normal range requirements still apply.`,'reward');e.awareness=e.awareness==='unaware'?'suspicious':e.awareness;
+  return;
+ }
+ if(action==='cover'){if(g.cover){await narrate('You are already using the best cover this position offers.');return;}g.cover=true;const coverText=key==='flooded'?'You climb onto the raised ledge, keeping the stone edge between you and the water below.':key==='archer'?'You move into the shadow of the nearest fallen column, breaking the archer’s clean line of sight.':key==='alchemy'?'You crouch behind a heavy workbench, glass and copper tubing screening your movements.':'You ease behind nearby cover, hiding most of your movements.';await narrate(coverText);return;}
+ if(action==='bypass'){
+  await narrate('You look for a route that avoids drawing the creature’s attention.');
+  const roll=await beginRoll(20,'Slip past unnoticed');
+  if(roll===20||(roll!==1&&roll+mod('DEX')>=difficulty+2)){
+   await peacefulExit(key==='lost'?'The goblin continues searching the stones, never realizing someone passed behind it.':'You move beyond sight and sound. The danger is left behind without a fight.',4);
+  }else{e.awareness='alert';e.engagedInCombat=true;await narrate('Loose rubble skitters under your foot. The creature whirls toward the sound.');await enemyTurn();}
+  return;
+ }
+ if(action==='help'){
+  await narrate(key==='wounded'?'You kneel just out of sword reach and offer to bind the wound.':key==='lost'?'You begin turning over the smaller stones, searching for any sign of the missing scout.':'You lower your weapon and try to understand the sentinel’s demand.');
+  const roll=await beginRoll(20,'Offer help');
+  const bonus=key==='wounded'?mod('WIS'):key==='lost'?mod('WIS'):mod('CHA');
+  if(roll===20||(roll!==1&&roll+bonus>=difficulty+1)){
+   if(key==='wounded'){g.potions++;await peacefulExit('The mercenary accepts your help, then presses a small bottle into your hand. “You will need this more than I will.” You gain a healing potion.',6);}
+   else if(key==='lost'){g.gold+=5;await peacefulExit('Together you find a scrap of ribbon caught beneath the arch. The relieved goblin thanks you, presses five coins into your hand, and hurries away.',6);}
+   else await peacefulExit('The sentinel lowers its hammer. “Then remember those who came before you.” It steps aside and permits you to approach the stairs.',9);
+  }else{e.awareness='alert';e.engagedInCombat=true;await narrate('Your movement is misunderstood. The creature draws back and raises its weapon in alarm.');await enemyTurn();}
+  return;
+ }
+ if(action==='parley'){
+  await narrate(key==='bridge'?'“No need for blood,” you call across the bridge. “What would it take to let me pass?”':key==='lost'?'You ask about Tikka. The goblin looks up, startled and hopeful.':key==='wounded'?'You ask what happened. The mercenary’s eyes dart toward the passage behind you.':key==='sentinel'?'You ask whom the ancient guardian serves.':'You raise an open hand and attempt to speak before weapons are drawn.');
+  const roll=await beginRoll(20,'Conversation');
+  if(roll===20||(roll!==1&&roll+mod('CHA')>=difficulty+2)){
+   await peacefulExit(key==='bridge'?'The bandit slowly lowers the bow. “Keep your purse. I have seen enough deaths today.” You cross unchallenged.':key==='lost'?'The goblin explains that Tikka was separated during a cave-in. After you promise to keep watch, it allows you to pass.':key==='wounded'?'The mercenary warns you of a guardian below, then gestures for you to pass.':key==='sentinel'?'“Remember their names,” the guardian whispers, moving aside at last.':'The creature considers your words and lets you go.',5);
+  }else{e.awareness='alert';e.engagedInCombat=true;await narrate('The reply is sharp and distrustful. The creature refuses to let you pass.');await enemyTurn();}
+  return;
+ }
+}
+if(cmd==='sneak_advance'){
+ if(g.cls!=='rogue'){await narrate('Only a rogue can make a Sneak Advance.');return}
+ if(!g.hidden){await narrate('You need to be Hidden before you can creep closer unseen.');return}
+ if(!e?.hp||g.range==='engaged'){await narrate('There is nowhere closer to sneak from here.');return}
+ if(g.stamina<1){await narrate('You need 1 Stamina to make a controlled Sneak Advance.');return}
+ g.stamina-=1;
+ await narrate(`Keeping low, you leave your current hiding place and creep one position closer while ${e.name} watches the wrong part of the room.`);
+ const roll=await beginRoll(20,'Sneak Advance');
+ const score=roll+mod('DEX')+talentRank('Stealth')+(g.cover?1:0),dc=11+g.floor+(e.awareness==='alert'?2:0);
+ g.range=ZONES[Math.max(0,ZONES.indexOf(g.range)-1)];if(e)e.range=g.range;
+ if(roll===20||score>=dc){
+  g.hidden=true;g.cover=false;
+  await narrate(`You reach ${g.range} distance without giving away your position. ${e.name} still cannot get a clean line on you.`,'reward');
+  if(e.ranged)await narrate(`${e.name} keeps aim on your last known position, waiting for a target that is no longer there.`);
+  else await narrate(`${e.name} turns slowly, searching the shadows you have already left behind.`);
+  return;
+ }
+ if(roll!==1&&score>=dc-3){
+  g.hidden=false;g.cover=false;e.awareness='alert';e.engagedInCombat=true;
+  await narrate(`You make the distance, but a scrape of leather against stone gives you away at the end of the move. You are now at ${g.range} distance, but no longer Hidden.`,'hurt');
+  return;
+ }
+ g.hidden=false;g.cover=false;e.awareness='alert';e.engagedInCombat=true;
+ await narrate(`Your movement is spotted halfway across the gap. ${e.name} reacts before you can settle into the new position.`,'hurt');
+ await enemyTurn();return
+}
+if(cmd==='stamina_potion'){if((g.staminaPotions||0)<=0){await narrate('Your endurance-tonic pouch is empty.');return}if(g.stamina>=maxStamina()){await narrate('Your Stamina is already full.');return}g.staminaPotions--;const restore=Math.min(8,maxStamina()-g.stamina);g.stamina+=restore;await narrate(`The bitter tonic hits like cold fire. You recover ${restore} Stamina (${g.stamina}/${maxStamina()}).`,'reward');if(g.enemy?.hp>0&&g.enemy.engagedInCombat)await enemyTurn();return}
+if(cmd==='recover_stamina'){if(!['rogue','warrior'].includes(g.cls)){await narrate('Your current class does not use this recovery technique.');return}if(g.stamina>=maxStamina()){await narrate('Your Stamina is already full.');return}const rogue=g.cls==='rogue';let regain=rogue?5:4;if(rogue&&(g.hidden||g.cover))regain+=2;if(!rogue)regain+=Math.max(0,Math.floor(mod('CON')/2));regain=Math.min(regain,maxStamina()-g.stamina);g.stamina+=regain;await narrate(rogue?`You slow your breathing, loosen your grip, and let the rush of the fight pass through you. ${regain} Stamina returns (${g.stamina}/${maxStamina()}).`:`You plant your feet, reset your guard, and force your breathing back under control. ${regain} Stamina returns (${g.stamina}/${maxStamina()}).`,'reward');if(g.enemy?.hp>0&&g.enemy.engagedInCombat)await enemyTurn();return}
+if(cmd==='mana_potion'){if((g.manaPotions||0)<=0){await narrate('Your mana-potion pouch is empty.');return}if(maxMana()<=0){await narrate('You have no Mana pool to restore.');return}if(g.mana>=maxMana()){await narrate('Your Mana is already full.');return}g.manaPotions--;const restore=Math.min(8,maxMana()-g.mana);g.mana+=restore;await narrate(`The blue draught burns cold on the way down. You recover ${restore} Mana (${g.mana}/${maxMana()}).`,'reward');if(g.enemy?.hp>0&&g.enemy.engagedInCombat)await enemyTurn();return}
+if(cmd==='center'){if(g.cls!=='mage'){await narrate('Centering is an arcane discipline available while you are acting as a Mage.');return}if(g.mana>=maxMana()){await narrate('Your Mana is already full.');return}const deep=hasTalent('Deep Meditation');const regain=Math.min(maxMana()-g.mana,deep?Math.max(7,6+Math.max(0,mod('INT'))):4);g.mana+=regain;await narrate(deep?`You shut out the battle for one dangerous moment and sink into deep meditation. ${regain} Mana returns (${g.mana}/${maxMana()}).`:`You steady your breathing and draw scattered arcane energy back into focus. ${regain} Mana returns (${g.mana}/${maxMana()}).`,'reward');if(g.enemy?.hp>0&&g.enemy.engagedInCombat)await enemyTurn();return}
+if(cmd==='talent_healing_herbs'){
+ if(!hasHealingHerbs()){await narrate('You have not learned how to prepare healing herbs.');return}
+ if(g.hp>=maxHP()){await narrate('You are already at full health.');return}
+ if(g.stamina<3){await narrate('You need 3 Stamina to prepare and apply the herbs.');return}
+ g.stamina-=3;const heal=2+d(4)+Math.max(0,Math.floor(mod('WIS')/2));g.hp=Math.min(maxHP(),g.hp+heal);
+ await narrate(`You crush the prepared herbs, bind them over the worst of your wounds, and recover ${heal} HP. You now have ${g.hp}/${maxHP()} HP.`,'reward');
+ if(e?.hp>0)await enemyTurn();return
+}
+if(cmd==='potion'){if(!g.potions){await narrate('Your potion pouch is empty.');return}if(g.hp>=maxHP()){await narrate('You are already at full health.');return}g.potions--;const heal=8+d(6);g.hp=Math.min(maxHP(),g.hp+heal);await narrate(`The potion restores ${heal} HP, bringing you to ${g.hp}.`,'reward');if(e?.hp>0)await enemyTurn();return}
+if(e?.hp>0){
+ if(cmd==='cover'){
+  if(g.cover){g.cover=false;await narrate('You step out from behind cover.');return}
+  if(e.obstacle==='clear floor'){await narrate('There is no reliable cover in this chamber. You remain exposed.');return}
+  g.cover=true;await narrate(`You slip behind the ${e.obstacle}. Incoming ranged attacks are harder to land.`);
+  if(e.awareness==='alert')await enemyTurn();return
+ }
+ if(cmd==='scout'){
+  await narrate(`You study ${e.name} from ${g.range} distance. It is ${e.awareness}; ${e.obstacle} lies between you. ${e.ranged?'It carries a ranged weapon.':'It must approach to strike in melee.'}`);
+  if(e.awareness==='suspicious'){e.awareness='alert';e.engagedInCombat=true;await narrate('Your prolonged observation draws its attention. It spots you.')}return
+ }
+ if(['melee','ranged','special','melee_leg','ranged_leg'].includes(cmd)){await strike(cmd);return}if(cmd==='kick'){
+ await narrate(`You drive a boot toward ${e.name}, trying to break its balance.`);
+ const n=await beginRoll(20,'Kick attack');const hit=n===20||(n!==1&&n+mod('STR')>=e.def);
+ if(!hit){await narrate('The creature pulls away and your kick misses.');await enemyTurn();return}
+ const dmg=Math.max(1,(await beginRoll(4,'Kick damage'))+Math.max(0,mod('STR')));
+ e.hp=Math.max(0,e.hp-dmg);await narrate(`The kick connects for ${dmg} damage. ${e.name} has ${e.hp} HP remaining.`,'reward');
+ if(e.hp===0){const exp=combatXP(e);await narrate(`${e.name} falls. You earn ${exp} XP for overcoming the fight.`,'reward');await gainXP(exp);if(e.villageBoss)await villageBossDefeated();return}
+ if(n>=16){e.stun=true;await narrate(`${e.name} staggers and loses its next opportunity to strike.`,'reward')}
+ await enemyTurn();return
+}
+if(cmd==='disarm'){
+ if(e.armed===false){await narrate(`${e.name} is already unarmed. There is no weapon left to take.`);return}
+ await narrate(`You reach for ${e.name}'s weapon, trying to twist it from its grasp.`);
+ const n=await beginRoll(20,'Disarm attempt');if(n===20||(n!==1&&n+mod('DEX')>=13+g.floor)){
+ e.armed=false;e.weaponNearby=false;e.swordMoved=true;e.stun=true;await narrate(`The weapon clatters away beyond easy reach. ${e.name} is disarmed, and the weapon remains where it fell.`,'reward');return
+ }
+ await narrate(`${e.name} wrenches the weapon out of your reach.`);await enemyTurn();return
+}
+if(cmd==='parley'){
+ await narrate(`You try to reason with ${e.name}, looking for any sign of hesitation.`);
+ const n=await beginRoll(20,'Persuasion');if(n===20||(n!==1&&n+mod('CHA')>=14+g.floor)){
+ await narrate(`${e.name} backs away, unwilling to continue fighting. You may move on, but there is no loot or combat XP.`,'reward');e.hp=0;e.looted=true;return
+ }
+ await narrate(`Your opponent refuses to yield.`);await enemyTurn();return
+}
+if(cmd==='hide'){
+ if(g.cls!=='rogue'){await narrate('Only the rogue can use Hide.');return}
+ if(e.obstacle==='clear floor'&&e.awareness==='alert'){await narrate('With nowhere to hide, the alert enemy keeps you in sight.');return}
+ const check=await beginRoll(20,'Hide / reposition');const stealthBonus=5+mod('DEX')+Math.floor((g.adventureLevel-1)/3)+(g.cover?2:0)+talentRank('Stealth');const hideDC=9+Math.min(4,g.floor);if(check!==1&&check+stealthBonus>=hideDC){g.hidden=true;g.cover=true;await narrate('You fade into the shadows and break the enemy’s line of sight. Your next Shadow Strike can be set up from concealment.','reward');}
+ else{e.awareness='alert';await narrate(check===1?'A loose stone skitters loudly across the floor. The enemy snaps toward the sound.':'Your movement catches the enemy’s attention before you can disappear.');await enemyTurn()}return
+ }
+ if(cmd==='retreat'){
+  if(g.range==='far'){await narrate('You are already as far back as this chamber allows without fleeing entirely.');return}
+  g.range=ZONES[Math.min(ZONES.length-1,ZONES.indexOf(g.range)+1)];if(e)e.range=g.range;g.cover=false;
+  await narrate(`You give ground deliberately, opening the distance to ${g.range}.`);
+  if(e.awareness==='alert')await enemyTurn();return
+ }
+ if(cmd==='approach'){
+  if(g.range==='engaged'){await narrate('You are already within arm’s reach.');return}
+  if(g.hidden){g.hidden=false;await narrate('You move quickly rather than carefully, giving up your concealment as you advance. Use Sneak Advance if you want to spend Stamina to try to stay Hidden.');}
+  g.range=ZONES[Math.max(0,ZONES.indexOf(g.range)-1)];if(e)e.range=g.range;g.cover=false;e.awareness='alert';
+  await narrate(`You close to ${g.range} distance.`);await enemyTurn();return
+ }if(cmd==='flee'){const n=await beginRoll(20,'Escape attempt');if(n+mod('DEX')>=12+g.floor){await narrate('You escape without claiming the enemy’s treasure.');await advance()}else{await narrate('Your foe cuts off the escape route.');await enemyTurn()}return}await narrate('That action cannot be resolved during combat.');return}
+if(cmd==='lootcorpse'){
+  if(!e||!('max' in e)||e.hp>0){await narrate('There is no fallen enemy here to search.');return}
+  if(e.looted){await narrate(`You have already searched ${e.name}. There is nothing else of value.`);return}
+  e.looted=true;const coins=e.villageBoss?18+d(8):d(7)+g.floor*2;g.gold+=coins;
+  await narrate(e.villageBoss?`Among the Bellkeeper’s ruined coat and silver fittings, you recover ${coins} gold in old village coin.`:`You search ${e.name}'s belongings and find ${coins} gold.`,'reward');
+  let loot=null;
+  if(e.type==='boss')loot=pick(g.cls==='mage'?['Ember Wand','Runed Staff']:g.cls==='warrior'?['Knight Sword','Longbow']:['Steel Dagger','Longbow']);
+  else if(d(4)===1)loot=pick(['Steel Dagger','Longbow','Runed Staff']);
+  if(loot&&!g.inventory.includes(loot)){g.inventory.push(loot);await narrate(`Among the remaining gear, you find a serviceable ${loot}. It has been added to your inventory.`,'reward');}
+  else if(!loot)await narrate('The rest of the equipment is too damaged or ordinary to be worth carrying.');
+  return
+}
+if(cmd==='scout'){
+  if(g.atCamp){await narrate('Beyond the campfire, the dungeon entrance waits. No immediate threat is visible.');return}
+  if(e?.hp>0){await narrate(`You study ${e.name}. It has ${e.hp} of ${e.max} HP remaining${e.armed===false?', and is currently unarmed':''}.`);return}
+  if(e?.type==='trap'&&!e.done){await narrate('Faint grooves in the stone suggest a mechanical trap. A careful inspection may reveal how it works.');return}
+  if(e?.type==='chest'&&!e.done){await narrate('The old chest appears sturdy, but the fittings show signs of corrosion.');return}
+  if(e?.type==='shrine'&&!e.done){await narrate('The shrine bears old offerings, and the candles glow without any obvious source of flame.');return}
+  if(e?.max&&e.hp===0){await narrate(`The body of ${e.name} lies motionless. You could search it before going deeper.`);return}
+  await narrate('You survey the chamber. Nothing else of immediate interest stands out.');return
+}
+if(cmd==='continue'){await advance();return}if(e?.type==='chest'&&!e.done&&cmd==='open'){e.done=true;let coins=7+d(12)+g.floor*3;g.gold+=coins;await narrate(`You open the chest and find ${coins} gold.`,'reward');if(d(3)===1){g.potions++;await narrate('You also find a healing potion.','reward')}if(d(3)===1){const loot=pick(['Steel Dagger','Longbow','Knight Sword','Runed Staff','Ember Wand']);if(!g.inventory.includes(loot)){g.inventory.push(loot);await narrate(`A ${loot} is tucked into the chest. It is now in your inventory.`,'reward')}}return}
+if(e?.type==='shrine'&&!e.done&&['pray','take'].includes(cmd)){e.done=true;if(cmd==='pray'){let heal=8+g.floor*2;g.hp=Math.min(maxHP(),g.hp+heal);await narrate(`A quiet warmth restores up to ${heal} health.`,'reward')}else{let coins=15+g.floor*4;g.gold+=coins;await narrate(`You take ${coins} gold from the shrine. The candles dim.`,'reward')}return}
+if(e?.type==='trap'&&!e.done&&cmd==='inspect'){
+ await narrate('You keep your hands clear of the wires and study the mechanism from a safe distance.');
+ const n=await beginRoll(20,'Observation check');
+ if(n===20||(n!==1&&n+observeBonus()>=10+g.floor)){
+  e.trapInspected=true;e.trapBonus=3;
+  await narrate('You trace the bell wire to a spring-loaded catch beneath a loose floor stone. The bells themselves are only the warning; stepping on the wrong stone releases a concealed blade. You now know where the safe footing and release catch are.','reward');
+ }else{
+  await narrate('You study the wires carefully but cannot determine exactly what they trigger. Nothing moves, and the trap remains untouched.');
+ }
+ return
+}
+if(e?.type==='trap'&&!e.done&&cmd==='disarm_trap'){
+ await narrate('You reach for the mechanism itself, using what you learned to try to render it harmless.');
+ const n=await beginRoll(20,'Disarm trap');
+ if(n===20||(n!==1&&n+mod('DEX')+(e.trapBonus||0)>=12+g.floor)){
+  e.done=true;const exp=6+g.floor;await narrate(`The catch releases without a sound. The corridor is safe now. You earn ${exp} XP.`,'reward');await gainXP(exp);
+ }else{
+  const dam=d(6)+g.floor;g.hp=Math.max(0,g.hp-dam);e.done=true;await narrate(`The mechanism snaps while your hand is on it. A hidden blade catches you for ${dam} damage.`,'hurt');if(!g.hp)await defeat();
+ }
+ return
+}
+if(e?.type==='trap'&&!e.done&&cmd==='cross'){
+ await narrate('You attempt to thread your way through the bell wires without disturbing the mechanism.');
+ const n=await beginRoll(20,'Careful crossing');
+ if(n===20||(n!==1&&n+mod('DEX')+(e.trapBonus||0)>=11+g.floor)){
+  e.done=true;const exp=5+g.floor;await narrate(`You cross safely and gain ${exp} XP.`,'reward');await gainXP(exp);
+ }else{
+  const dam=d(6)+g.floor;g.hp=Math.max(0,g.hp-dam);e.done=true;await narrate(`A wire catches your boot and the concealed mechanism fires. You suffer ${dam} damage.`,'hurt');if(!g.hp)await defeat();
+ }
+ return
+}
+if(e?.type==='merchant'&&cmd==='buy'){if(g.gold<12){await narrate('The merchant requires twelve gold, more than you have.');return}g.gold-=12;g.potions++;await narrate('You purchase a healing potion for twelve gold.','reward');return}
+if(e?.type==='merchant'&&cmd==='upgrade'){const cost=15+g.weaponBonus*10;if(g.gold<cost){await narrate(`You need ${cost} gold to improve your weapons.`);return}g.gold-=cost;g.weaponBonus++;await narrate(`Your permanent weapon improvement is now +${g.weaponBonus} damage.`,'reward');return}
+await narrate('You cannot perform that action here.');}
+async function advance(){g.enemies=[];g.groupEncounter=false;g.encounterRewarded=false;g.encounterLooted=false;if(g.room===3){g.floor++;g.room=0;g.best=Math.max(g.best,g.floor);await narrate(`You descend a winding staircase to floor ${g.floor}.`)}else g.room++;await chamber()}
+async function act(cmd){if(busy||pending)return;busy=true;$('actionPanel').hidden=true;$('turnState').textContent='Dungeon Master';try{await resolve(cmd);if(g.active&&!pending&&!$('modalBg').hidden){/* modal owns input */}else if(g.active&&$('actionPanel').hidden&&!pending){await promptChoice(g.inVillage?'What would you like to do here?':g.atCamp?'What would you like to do at camp?':g.enemy?.hp>0?(g.enemy.engagedInCombat?'Your opponent is still before you. What will you do?':'The moment holds. How do you respond?'):'What would you like to do next?',options())}}catch(err){console.error(err);await narrate('Something interrupted that action. Your adventure can continue.');if(g?.active)menu(options())}finally{busy=false;show();store()}}
+// Freeform actions are parsed into intent, target, method, position and desired effect.
+function parseAction(raw){
+ const t=raw.toLowerCase().replace(/[’']/g,"'").trim(), e=g?.enemy, alive=!!(e&&e.hp>0);
+ const stay=/\b(stay|remain|without leaving|from behind|keep|hold position)\b/.test(t);
+ const magic=/\b(wand|spell|magic|arcane|blast|bolt|ray)\b/.test(t);
+ const bow=/\b(bow|arrow|shoot|fire|ranged)\b/.test(t);
+ const melee=/\b(staff|dagger|sword|blade|melee|stab|slash|swing|punch|kick)\b/.test(t);
+ const inspectRoom=/\b(inspect|search|study|examine|look|survey|scan)\b/.test(t)&&/\b(room|chamber|area|surroundings|environment|around|anything useful|details|objects|cover)\b/.test(t);
+ if(/\b(character sheet|inventory|stats|attributes|abilities|skills|talents|equipment|backpack)\b/.test(t))return {cmd:'sheet'};if(alive&&hasTalent('Explosive Shot')&&/\b(explosive shot|blast arrow|explosive arrow)\b/.test(t))return {cmd:'talent_explosive'};if(alive&&hasTalent('Arcane Charge')&&/\b(charge spell|arcane charge|gather power|charge my wand)\b/.test(t))return {cmd:'talent_arcane'};if(alive&&hasTalent('Snarecraft')&&/\b(snare|set a trap|prepare a trap)\b/.test(t))return {cmd:'talent_snare'};if(alive&&hasTalent('Brace')&&/\b(brace|set for charge|prepare for charge)\b/.test(t))return {cmd:'talent_brace'};
+ if(/\b(center|centering|meditate|meditation|regain mana|recover mana|restore mana)\b/.test(t))return {cmd:'center'};if(/\b(catch my breath|catch breath|second wind|regain stamina|recover stamina|restore stamina|rest)\b/.test(t)&&['rogue','warrior'].includes(g.cls))return {cmd:'recover_stamina'};if(/\b(drink|use)\b.*\b(endurance|stamina)\b.*\b(tonic|potion|draught)?\b/.test(t))return {cmd:'stamina_potion'};if(/\b(switch|change)\b.*\b(class|warrior|rogue|mage)\b/.test(t))return {cmd:'switch'};
+ if(hasHealingHerbs()&&/\b(use|apply|prepare|chew|bind|heal with|treat with)\b.*\b(herb|herbs|healing herb|field medicine)\b/.test(t))return {cmd:'talent_healing_herbs'};
+ if(/\b(drink|quaff|use|take)\b.*\b(mana|arcane)\b.*\b(potion|draught|elixir)\b/.test(t))return {cmd:'mana_potion'};if(/\b(drink|quaff|use|take)\b.*\b(potion|draught|elixir)\b/.test(t))return {cmd:'potion'};
+ if(g.inVillage){const loc=g.village.location;const places={square:'square',inn:'inn',lantern:'inn',store:'store',shop:'store',merrow:'store',smith:'smith',smithy:'smith',apothecary:'smith',chapel:'chapel',church:'chapel',house:'house',cellar:'cellar'};for(const [word,dest] of Object.entries(places)){if(new RegExp('\\b'+word+'\\b').test(t)&&/\b(go|visit|walk|head|return|travel)\b/.test(t))return {cmd:'village:go:'+dest}}if(/\b(camp|dungeon camp|leave village|leave town)\b/.test(t))return {cmd:'village:leave'};if(g.village.location==='cellar'&&/\b(read|study|open|examine)\b.*\b(journal|diary|book)\b/.test(t))return {cmd:'village:quest:journal'};if(g.village.location==='cellar'&&/\b(open|enter|confront|approach|examine)\b.*\b(door|chamber|bell)\b/.test(t))return {cmd:'village:quest:bossdoor'};if(/\b(quest|quests|quest log)\b/.test(t))return {cmd:'sheet_quests'};if(/\b(clue|clues|notes|journal)\b/.test(t))return {cmd:'sheet_clues'};const map={fountain:'fountain',square:'square',ledger:'ledger',book:'ledger',cards:'cards',players:'cards',parcel:'parcels',parcels:'parcels',clapper:'clapper',silver:'clapper',rope:'rope',records:'records',hymnal:'records',door:'frontdoor',entrance:'frontdoor',grounds:'housegrounds',foundation:'housegrounds',tracks:'housegrounds',shutter:'shutter'};if(/\b(examine|inspect|study|search|look|observe|listen|watch|investigate)\b/.test(t)){for(const [word,sub] of Object.entries(map))if(new RegExp('\\b'+word+'\\b').test(t))return {cmd:'village:investigate:'+sub}}if(/\b(talk|speak|ask|question)\b/.test(t)){if(/\b(mara|innkeeper)\b/.test(t))return {cmd:'village:talk:innkeeper'};if(/\b(merrow|shopkeeper)\b/.test(t))return {cmd:'village:talk:merrow'};if(/\b(corren|apothecary)\b/.test(t))return {cmd:'village:talk:corren'};if(/\b(elian|sister|caretaker)\b/.test(t))return {cmd:'village:talk:elian'}}if(/\b(buy|purchase)\b.*\b(mana|arcane)\b.*\b(potion|draught|elixir)\b/.test(t))return {cmd:'village:buy:mana'};if(/\b(buy|purchase)\b.*\b(endurance|stamina)\b.*\b(tonic|potion|draught)\b/.test(t))return {cmd:'village:buy:stamina'};if(/\b(buy|purchase)\b.*\b(potion|draught|healing)\b/.test(t))return {cmd:'village:buy:potion'};if(/\b(upgrade|hone|sharpen|improve)\b/.test(t))return {cmd:'village:smith:upgrade'};if(inspectRoom){const defaults={square:'square',inn:'ledger',store:'parcels',smith:'clapper',chapel:'rope',house:'housegrounds'};return {cmd:'village:investigate:'+defaults[loc]}}return null;}
+ if(inspectRoom)return {cmd:'inspect_room'};
+ if(/\b(continue|proceed|descend|next (room|chamber|floor)|go deeper|move on|leave (the )?(room|chamber))\b/.test(t))return {cmd:g.atCamp?'enter':'continue'};
+ if(g.atCamp)return /\b(enter|start|begin|dungeon|go in)\b/.test(t)?{cmd:'enter'}:null;
+ const objs=findRoomObject(t);
+ if(objs.length>1)return {clarify:`I can see more than one possible target in that request: ${objs.map(o=>o.name).join(' and ')}. Which one do you mean?`};
+ if(objs.length===1){
+   const o=objs[0];
+   let action='inspect';
+   if(/\b(hide|cover|behind)\b/.test(t))action=/\bhide\b/.test(t)?'hide':'cover';
+   else if(/\b(kick|boot|nudge|push away|knock away)\b/.test(t))action='move';
+   else if(/\b(topple|knock|bring|collapse|push over)\b/.test(t))action='topple';
+   else if(/\b(blast|spell|magic)\b/.test(t))action='blast';
+   else if(/\b(cut|sever|slice)\b/.test(t))action='cut';
+   else if(/\b(shoot|fire|arrow)\b/.test(t))action='shoot';
+   else if(/\b(drop|release)\b/.test(t))action='drop';
+   else if(/\b(break|smash|destroy)\b/.test(t))action='break';
+   else if(/\b(extinguish|put out|snuff)\b/.test(t))action='extinguish';
+   else if(/\b(throw|toss)\b/.test(t))action='throw';
+   else if(/\b(sneak|slip|move|go|pass|around|through)\b/.test(t))action=/\b(sneak|slip|avoid|bypass|past)\b/.test(t)?'bypass':'move';
+   else if(/\b(use|touch|press|turn)\b/.test(t))action='use';
+   else if(/\b(search|inspect|examine|study|look)\b/.test(t))action='inspect';
+   const method=magic?'magic':bow?'ranged':melee?'physical':'';
+   return {cmd:`object:${o.id}:${action}:${method}`,object:o,action,method};
+ }
+ if(alive){
+   const current=sceneInfo();
+   // Explicit weapon/method beats generic attack words. Staying in cover never implies a charge.
+   if(/\b(shadow strike|shield bash|arcane burst|special ability|special attack)\b/.test(t))return {cmd:'special'};
+   const targetsLeg=/\b(injured|wounded|bad|hurt)\s+(leg|knee)|\b(leg|knee)\b/.test(t);
+   if((magic||bow)&&/\b(attack|hit|shoot|fire|cast|blast|strike|target|back)\b/.test(t))return {cmd:targetsLeg?'ranged_leg':'ranged',preservePosition:stay};
+   if(melee&&/\b(attack|hit|strike|stab|slash|swing|rush|charge)\b/.test(t))return {cmd:targetsLeg?'melee_leg':'melee'};
+   if(/\b(disarm|take.*weapon|take.*sword|steal.*weapon|steal.*sword|grab.*blade|knock.*weapon)\b/.test(t))return {cmd:'disarm'};
+   if(/\b(kick|boot|trip|sweep.*leg)\b/.test(t))return {cmd:'kick'};
+   if(current&&!e.engagedInCombat){
+     if(/\b(help|assist|tend|heal|bandage|search for|look for.*tikka)\b/.test(t)&&current.choices.some(x=>x[1]==='scene_help'))return {cmd:'scene_help'};
+     if(/\b(talk|ask|bargain|reason|speak|negotiate|tell|question)\b/.test(t)&&current.choices.some(x=>x[1]==='scene_parley'))return {cmd:'scene_parley'};
+     if(/\b(watch|observe|study|wait|pattern|patrol)\b/.test(t)&&current.choices.some(x=>x[1]==='scene_observe'))return {cmd:'scene_observe'};
+     if(/\b(slip past|sneak past|go around|avoid|bypass)\b/.test(t)&&current.choices.some(x=>x[1]==='scene_bypass'))return {cmd:'scene_bypass'};
+   }
+   if(/\b(talk|speak|parley|negotiate|persuade|intimidate|threaten|demand|ask)\b/.test(t))return {cmd:'parley'};
+   if(/\b(take cover|behind the|use the wall|hide behind|find cover|leave cover)\b/.test(t))return {cmd:'cover'};
+   if(g.cls==='rogue'&&g.hidden&&g.range!=='engaged'&&/\b(sneak|creep|move quietly|advance quietly|slip closer|sneak closer|advance while hidden|stay hidden)\b/.test(t))return {cmd:'sneak_advance'};
+   if(/\b(hide|stealth|conceal|into the shadow)\b/.test(t))return {cmd:'hide'};
+   if(/\b(flee|escape|run away|retreat from|leave the fight)\b/.test(t))return {cmd:'flee'};
+   if(/\b(disengage|back off|back away|fall back|create distance|make distance|put distance|retreat|step back)\b/.test(t))return {cmd:'retreat'};
+   if(/\b(move closer|approach|close the distance|charge|advance|step forward)\b/.test(t))return {cmd:'approach'};
+   if(/\b(attack|strike|hit)\b/.test(t))return {clarify:`Do you want to attack from range with ${cls().equip.ranged}, or close in with ${cls().equip.melee}?`};
+   if(/\b(look|study|examine|inspect|assess|observe)\b/.test(t))return {cmd:'inspect_room'};
+   return null;
+ }
+ const search=/\b(search|loot|rifle|pockets?|ransack|examine|inspect|check|take|scavenge|look through)\b/.test(t);
+ if(e?.max!==undefined&&e.hp===0&&search)return {cmd:'lootcorpse'};
+ if(e?.type==='trap'&&!e.done){
+  if(/\b(disarm|disable|cut|jam|release|neutralize)\b/.test(t))return {cmd:'disarm_trap'};
+  if(/\b(examine|inspect|study|search|investigate|look|observe|trace|mechanism|pressure plate)\b/.test(t))return {cmd:'inspect'};
+  if(/\b(cross|jump|leap|dash|step over|avoid|rush|walk through|pass through)\b/.test(t))return {cmd:'cross'};
+ }
+ if(e?.type==='chest'&&!e.done&&/\b(open|search|loot|pick|unlock|force|pry|chest|container|box)\b/.test(t))return {cmd:'open'};
+ if(e?.type==='shrine'&&!e.done){if(/\b(pray|kneel|meditate|bless|rest|worship)\b/.test(t))return {cmd:'pray'};if(/\b(take|steal|loot|grab|offerings|coins)\b/.test(t))return {cmd:'take'};}
+ if(e?.type==='merchant'){if(/\b(buy|purchase|get|shop)\b.*\b(potion|healing|medicine)\b/.test(t))return {cmd:'buy'};if(/\b(upgrade|improve|sharpen|enhance|forge|repair)\b/.test(t))return {cmd:'upgrade'};}
+ if(/\b(look|search|examine|inspect|study|investigate)\b/.test(t))return {cmd:'inspect_room'};
+ return null;
+}
+function freeAction(){
+ const raw=$('free').value.trim();if(!raw)return;
+ if(busy||pending){$('actionFeedback').textContent='Finish the current action or dice roll first.';return}
+ const parsed=parseAction(raw);
+ if(!parsed){$('actionFeedback').textContent='I cannot confidently determine your intent from that yet. Nothing changed. Try naming the target and what you want to accomplish.';return}
+ if(parsed.clarify){$('actionFeedback').textContent=parsed.clarify;return}
+ $('free').value='';$('actionFeedback').textContent=`Understood: ${raw}`;
+ void act(parsed.cmd);
+}
+$('freeSubmit').addEventListener('click',freeAction);
+$('free').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();freeAction()}});
+$('classSwitch').onclick=()=>{if(!busy&&!pending)switchModal()};
+function modal(title,body,choices){$('modalTitle').textContent=title;$('modalBody').textContent=body;$('modalButtons').replaceChildren(...choices.map(([label,fn])=>safeBtn(label,fn)));$('modalBg').hidden=false;$('actionPanel').hidden=true;}
+function closeModal(){ $('modalBg').hidden=true;if(g?.active)menu(g.atCamp?campMenu():options());show();store()}
+function finalizeClassSwitch(k){const oldMax=maxHP(),ratio=g.hp/oldMax;g.cls=k;g.hp=clamp(Math.ceil(ratio*maxHP()),1,maxHP());g.stamina=maxStamina();g.mana=maxMana();g.prepared=null;g.hidden=false;if(!g.atCamp)g.switchedThisRoom=true;closeModal();void narrate(`You take up the mantle of a ${CLASS[k].name}. Your previous class progress remains safely preserved.`)}
+function chooseClassStarter(k){const opts=CLASS[k].starterTalents;modal(`${CLASS[k].name} initiation`,`This is the first time this adventurer has trained as a ${CLASS[k].name}. Choose the starting talent that will define the class. It remains attached to this class when you switch away and back.`,[...opts.map(t=>[`${t} — ${TALENT[t].desc}`,()=>{g.talents[t]=Math.max(1,g.talents[t]||0);g.classStarters=g.classStarters||{};g.classStarters[k]=t;finalizeClassSwitch(k)}]),['Cancel',switchModal]])}
+function switchModal(){if(!(g.atCamp||g.inVillage||(!g.enemy?.hp&&!g.switchedThisRoom))){void narrate('You cannot switch classes during a fight or twice in the same chamber.');return}modal('Change class',`Overall adventurer level ${g.adventureLevel} and permanent attributes stay intact. Each class retains separate XP, levels, skill points and weapon loadouts. The first time you enter a new class, you also choose that class’s starting talent.`,[...clsIds.map(k=>[`${CLASS[k].name} — level ${g.classes[k].level}${k===g.cls?' (current)':''}`,()=>{if(k===g.cls){closeModal();return}g.classStarters=g.classStarters||{};if(!g.classStarters[k]){chooseClassStarter(k);return}finalizeClassSwitch(k)}]),['Cancel',closeModal]])}
+window.addEventListener('beforeunload',()=>{if(g)store()});
+})();</script>
+<script>
+(()=>{
+  const mobile = window.matchMedia && window.matchMedia('(max-width: 790px)').matches;
+  if(!mobile) return;
+  const rollPanel=document.getElementById('rollPanel');
+  const actionPanel=document.getElementById('actionPanel');
+  const rollInput=document.getElementById('rollInput');
+  const journal=document.getElementById('journal');
+  function reveal(panel, focusEl){
+    if(!panel || panel.hidden) return;
+    requestAnimationFrame(()=>{
+      panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+      if(focusEl && document.activeElement!==focusEl){
+        try{focusEl.focus({preventScroll:true});}catch(e){try{focusEl.focus();}catch(_){}}
+      }
+    });
+  }
+  if(rollPanel){
+    new MutationObserver(()=>{ if(!rollPanel.hidden) reveal(rollPanel,rollInput); }).observe(rollPanel,{attributes:true,attributeFilter:['hidden']});
+  }
+  if(actionPanel){
+    new MutationObserver(()=>{ if(!actionPanel.hidden) reveal(actionPanel,null); }).observe(actionPanel,{attributes:true,attributeFilter:['hidden']});
+  }
+  if(journal){
+    new MutationObserver(()=>{ journal.scrollTop=journal.scrollHeight; }).observe(journal,{childList:true});
+  }
+})();
+</script>
+</body></html>
